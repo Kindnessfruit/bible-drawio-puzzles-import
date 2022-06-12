@@ -1,0 +1,223 @@
+<body onload="bcao({{i_st}})">
+
+  <h1><a href="/">import scriptures into draw.io here</a></h1>
+
+  {{!-- <p>select verses, press "generate!", copy and paste into the csv import section of the draw.io app. It's that easy.</p> --}}
+
+  <form name="qi" id="qi">
+  {{#each i_}}
+  <div id="q{{i}}_t" class="qi_t">
+    <div id="q{{i}}_u" name="q{{i}}_u" onchange="sendqi()" class="qi qi__ qi_u">
+      {{i}}
+      <div class="qi__ dbnn">
+        <label for="dbnn">database</label><br>
+        <select name="dbnn" id="dbnn_{{i}}">
+          {{#each ../db__}}
+          <option value={{n}}>{{n}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="qi__ bn">
+        <label for="bn">Bible Version</label><br>
+        <select name="bn" id="bn_{{i}}">
+          {{#each l_.bn}}
+          <option value="{{n}}">{{n}}</option>
+          {{/each}}
+        </select>
+      </div>
+      {{!-- --}}
+      <div class="qi__ b">
+        <label for="b">Book</label><br>
+        <select name="b" id="b_{{i}}">
+          {{#each ../b_}}
+          <option value={{oe}}>{{title_short}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="qi__ cao c">
+        <label for="c">Chapter</label><br>
+        <select name="c" id="c_{{i}}">
+          {{#each l_.c}}
+          <option value={{c}}>{{c}}</option>
+          {{/each}}
+        </select>
+      </div> 
+      <div class="qi__ cao a">
+        <label for="a">Begins in</label><br>
+        <select name="a" id="a_{{i}}">
+          {{#each l_.a}}
+          <option value={{v}}>{{v}}</option>
+          {{/each}}
+        </select>
+      </div>
+      <div class="qi__ cao o">
+        <label for="o">ends in</label><br>
+        <select name="o" id="o_{{i}}">
+          {{#each l_.o}}
+          <option value={{v}}>{{v}}</option>
+          {{/each}}
+        </select>
+      </div>
+    </div>
+      {{!-- --}}
+    <div id="q{{i}}" name="q{{i}}" onchange="u_i_()" class="qi qi__ qi_l">
+      <div class="qi__">
+        <label for="m">mode</label><br>
+        <select name="m" id="m_{{i}}" class="">
+          <option value=1>1. KJV texts with italic</option>
+          <option value=2>2. plus Red texts on the words of Jesus Christ</option>
+          <option value=3>3. plus reference to Strong's number (at biblehub.com)</option>
+        </select>
+      </div>
+      <div class="qi__ ">
+        <label for="j">j</label><br>
+        <input type="checkbox" name="j" id="j_{{i}}">
+      </div>
+      {{!-- --}}
+      <div class="qi__">
+        <label for="w">width</label><br>
+        <input type="number" name="w" id="w_{{i}}" min="0" step="10" value="380" class="wsi">pt
+      </div>
+      <div class="qi__">
+        <label for="s">font size</label><br>
+        <input type="number" name="s" id="s_{{i}}" min="0" value="12" class="wsi">pt
+      </div>
+      <div class="qi__">
+        <label for="y">font</label><br>
+        <select name="y" id="y_{{i}}">
+          <option class="HE" value="Helvetica">Helvetica</option>
+          <option class="VE" value="Verdana">Verdana</option>
+          <option class="TN" value="Times New Roman">Times New Roman</option>
+          <option class="GA" value="Garamond">Garamond</option>
+          <option class="CC" value="Comic Sans MS">Comic Sans MS</option>
+          <option class="CO" value="Courier New">Courier New</option>
+          <option class="GE" value="Georgia">Georgia</option>
+          <option class="OL" value="Lucida Console">Lucida Console</option>
+          <option class="TA" value="Tahoma">Tahoma</option>
+        </select>
+      </div>
+    </div>
+  </div>
+    {{!-- --}}
+  {{/each}}
+  </form>
+  
+  <button id="more" onclick="sendid()">more</button>
+  <button id="less" onclick="sendid()">less</button>
+  <button id="submit" onclick="sendid()">generate!</button>
+  {{!-- <br> --}}
+  <button id="uurl" onclick="sendid()">update url</button>
+  <br><br>
+  <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
+  <textarea id="r" name="r" readonly="readonly" cols="30" rows="10">{{r}}</textarea>
+
+  <form id="bind" method="post">
+  <input type="hidden" name="i_" id="i_" value="{{i_st}}">
+  <input type="hidden" name="change" id="hiddeninput">
+  </form>
+  {{!-- <input type="hidden" name="l_" id="l_" value={{l_st}}> --}}
+  
+  {{!-- <script src="home.js"></script> --}}
+  <script>
+
+    function geti(){
+      return JSON.parse(document.getElementById('i_').value)
+    }
+    function post(i,n="change",an='/'){
+      // https://stackoverflow.com/a/133997
+      var hinp=document.getElementById('hiddeninput')
+      hinp.value=i;if(n!="change"){hinp.name=n}
+      if(an!='/'){document.getElementById('bind').action=an}
+      document.getElementById('bind').submit();
+    }
+
+    // update input 'i_' in 'bind'
+    function u_i_(f_=['m','j','w','s','y']){
+      var i_=geti()
+      i_.forEach(
+        async(i)=>{f_.forEach(async(f)=>{
+          var n_=`${f}_${i.i}`; 
+          var a_=document.getElementById(n_)
+          a_=''+((f=='j')?+a_.checked:a_.value)
+          // console.log(a_)
+          if(f=='j'){i[f]=+i[f]}
+          // console.log(n_,a_)
+          // console.log(f,i.i,i[f],+i[f],+i[f]+'')
+          if(a_!=''+i[f]){i[f]=a_}
+        })}
+      );
+      // console.log(i_)
+      document.getElementById('i_').value=JSON.stringify(i_)
+    }
+
+    function sendid(an='/'){
+      u_i_()
+      var a_id=document.activeElement.id
+      var [n,fn,fi]=[1,'',''];
+      if(a_id=='submit'){
+        var i_=geti();var f_=['b','c','a','o']
+        i_.every((i)=>{i=i.i;f_.every((f)=>{
+            if(!document.getElementById(f+'_'+i).value){
+              n=0;fn=f;fi=i}
+            return(n)?true:false
+          });return(n)?true:false
+        })
+      }
+
+      fn={b:'book',c:'chapter',a:'the starting verse',o:'the ending verse'}[fn]
+
+      if(a_id=='submit'&&!n){
+        alert(`Form incomplete. Please select ${fn} from group ${fi}.`)}
+      else{post(a_id,"change",an)}
+      // console.log(document.getElementById('i_').value)
+      // console.log(document.activeElement.id)
+    }
+
+    function sendqi(an='/'){
+      var e = document.activeElement
+      var [n,a]=[e.id,e.value]
+
+      // update 'w','s' 
+      // if(!a){
+        // JSON.parse(document.getElementById('i_').value).every(
+          // async(i)=>{var b=0;['w','s'].every(async(f)=>{
+            // var n_=`${f}_${i.i}`; 
+            // var a_=document.getElementById(n_).value
+            // if(+a_!=+i[f]){n=n_;a=a_;b=1;return false}
+            // else{return true}
+          // })
+          // return(b==0)
+        // })
+      // }
+
+      if(n.split('_')[0]=='j'){a=(e.checked)?1:0}
+      post(a,n,an)
+    }
+
+    function msub(){
+      var f=document.getElementById('qi')
+      f.action='/s'
+      f.submit()
+    }
+    function bcao(a){
+      if(a){
+        console.log(a)
+        a.forEach(async(e)=>{
+          Object.keys(e).forEach(async(f)=>{
+            var m=document.getElementById(`${f}_${e.i}`)
+            if(f!='i'){
+              if(f!='l_'){m.value=e[f]}
+              if(f=='j'){m.checked=(+e[f])
+              }
+            }
+          })
+        })
+      }
+      var r=document.getElementById('r')
+      r.style.height = "40px";
+      r.style.height = (r.scrollHeight)+40 + "px";
+      // if(r.scrollHeight>r.style.height){
+      // }
+    }
+  </script>
+</body>
