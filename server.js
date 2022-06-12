@@ -16,7 +16,7 @@ const __dirname = dirname(__filename)
 // jsPEXT()
 // server ocde
 const web_server = ep()
-var port = 8000
+var port = process.env.PORT || 8000
 
 web_server.engine('handlebars', hb())
 web_server.set('view engine', 'handlebars')
