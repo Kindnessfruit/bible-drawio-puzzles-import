@@ -225,7 +225,10 @@ export async function getTNHC(p,qi,t){
 export async function qo2l(qo){var [tu,tt]=qo
   try {    
     console.log(`launching puppeteer...`)
-    const b = await pppt.launch()
+    const b = await pppt.launch({
+      headless: true,
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    })
     const p = await b.newPage();
     await p.goto(`${__dirname}/ht.html`)
     await ucss(p,tu)
