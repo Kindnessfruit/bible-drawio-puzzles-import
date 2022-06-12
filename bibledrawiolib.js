@@ -230,7 +230,11 @@ export async function qo2l(qo){var [tu,tt]=qo
       args: ['--no-sandbox', '--disable-setuid-sandbox']
     })
     const p = await b.newPage();
-    await p.goto(`${__dirname}/ht.html`)
+    await p.goto('about:blank')
+    await p.evaluate(async()=>{
+      var s = document.createElement('style');s.id = 's'; 
+      document.head.appendChild(s)
+    })
     await ucss(p,tu)
 
     const ce=Math.ceil
