@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style id="s">
+    body{font-family: 'Helvetica';}
+    .qi__{
+      display: inline-block;
+      }
+    .qi{
+      width: 670px;
+      max-width: calc(98%);
+      border: 1.2px solid;
+      padding: 0px 4px 2px 4px;
+      margin-bottom: 4px;
+      margin-right: 7px;
+    }
+    .qi_t{
+      margin-bottom: 4px;
+    }
+    .dbnn{width: 80px;}
+    .bn{width: 230px;}
+    .b{width: 120px;}
+    .c{width: 70px;}
+    .a{width: 70px;}
+    .o{width: 56px;}
+    select{width: 100%;}
+    select[name="m"]{width: 300px;}
+    .wsi{width: 80px;}
+    select[name="y"]{width: 120px;}
+    .HE{font-family: 'Helvetica';}
+    .VE{font-family: 'Verdana';}
+    .TN{font-family: 'Times New Roman';}
+    .GA{font-family: 'Garamond';}
+    .CC{font-family: 'Comic Sans MS';}
+    .CO{font-family: 'Courier New';}
+    .GE{font-family: 'Georgia';}
+    .OL{font-family: 'Lucida Console';}
+    .TA{font-family: 'Tahoma';}        
+    textarea{
+      width: 98%;
+      resize: none;      
+      white-space: pre;
+      overflow-wrap: normal;
+    }
+  </style>
+</head>
+<body>
+  <h1><a href="/">import scriptures into draw.io here</a></h1>
+
+  <div id="Abel"></div>
+
+  <template id="main">
+    <form name="qi" id="qi">
+    {{#each i_}}
+    <div id="q{{i}}_t" class="qi_t">
+      <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="qi qi__ qi_u">
+        {{i}}
+        <div class="qi__ dbnn">
+          <label for="dbnn">database</label><br>
+          <select name="dbnn" id="dbnn_{{i}}">
+            {{#each ../db__}}
+            <option value={{n}}>{{n}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="qi__ bn">
+          <label for="bn">Bible Version</label><br>
+          <select name="bn" id="bn_{{i}}">
+            {{#each l_.bn}}
+            <option value="{{n}}">{{n}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <!--  -->
+        <div class="qi__ b">
+          <label for="b">Book</label><br>
+          <select name="b" id="b_{{i}}">
+            {{#each ../b_}}
+            <option value={{oe}}>{{title_short}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="qi__ cao c">
+          <label for="c">Chapter</label><br>
+          <select name="c" id="c_{{i}}">
+            {{#each l_.c}}
+            <option value={{c}}>{{c}}</option>
+            {{/each}}
+          </select>
+        </div> 
+        <div class="qi__ cao a">
+          <label for="a">Begins in</label><br>
+          <select name="a" id="a_{{i}}">
+            {{#each l_.a}}
+            <option value={{v}}>{{v}}</option>
+            {{/each}}
+          </select>
+        </div>
+        <div class="qi__ cao o">
+          <label for="o">ends in</label><br>
+          <select name="o" id="o_{{i}}">
+            {{#each l_.o}}
+            <option value={{v}}>{{v}}</option>
+            {{/each}}
+          </select>
+        </div>
+      </div>
+      <!--  -->
+      <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="qi qi__ qi_l">
+        <div class="qi__">
+          <label for="m">mode</label><br>
+          <select name="m" id="m_{{i}}" class="">
+            <option value=1>1. KJV texts with italic</option>
+            <option value=2>2. plus Red texts on the words of Jesus Christ</option>
+            <option value=3>3. plus reference to Strong's number (at biblehub.com)</option>
+          </select>
+        </div>
+        <div class="qi__ ">
+          <label for="j">j</label><br>
+          <input type="checkbox" name="j" id="j_{{i}}">
+        </div>
+        <!--  -->
+        <div class="qi__">
+          <label for="w">width</label><br>
+          <input type="number" name="w" id="w_{{i}}" min="0" step="10" value="380" class="wsi">pt
+        </div>
+        <div class="qi__">
+          <label for="s">font size</label><br>
+          <input type="number" name="s" id="s_{{i}}" min="0" value="12" class="wsi">pt
+        </div>
+        <div class="qi__">
+          <label for="y">font</label><br>
+          <select name="y" id="y_{{i}}">
+            <option class="HE" value="Helvetica">Helvetica</option>
+            <option class="VE" value="Verdana">Verdana</option>
+            <option class="TN" value="Times New Roman">Times New Roman</option>
+            <option class="GA" value="Garamond">Garamond</option>
+            <option class="CC" value="Comic Sans MS">Comic Sans MS</option>
+            <option class="CO" value="Courier New">Courier New</option>
+            <option class="GE" value="Georgia">Georgia</option>
+            <option class="OL" value="Lucida Console">Lucida Console</option>
+            <option class="TA" value="Tahoma">Tahoma</option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <!--  -->
+    {{/each}}
+    </form>   
+    <button id="more" onclick="sendid()">more</button>
+    <button id="less" onclick="sendid()">less</button>
+    <button id="submit" onclick="sendid()">generate!</button>
+    <br><br>
+    <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
+    <textarea id="r" name="r" readonly="readonly" cols="30" rows="10">{{r}}</textarea>
+    
+    <form id="bind" method="post">
+      <input type="hidden" name="i_" id="i_" value="{{i_st}}">
+      <input type="hidden" name="change" id="hiddeninput">
+    </form>
+  </template>
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
+    integrity="sha512-5SUkiwmm+0AiJEaCiS5nu/ZKPodeuInbQ7CiSrSnUHe11dJpQ8o4J1DU/rw4gxk/O+WBpGYAZbb8e17CDEoESw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.js" 
+    integrity="sha512-c7SfJeKRl8g7wgL+zMGX78faYVGp+NZVQ587mRLrqeLySX/qHCQOKw/iZ5Pp64DaPjvedixWC/Fe73upnhBaRA==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="client.js"></script>
+</body>
+</html>

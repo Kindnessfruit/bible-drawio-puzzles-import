@@ -2,6 +2,7 @@ import ep from "express";
 import hb from "express-handlebars";
 
 import cl from "./bibledrawiolib.js";
+import u_ from "./utillib.js";
 
 import sess from 'express-session';
 
@@ -15,14 +16,14 @@ const __dirname = dirname(__filename)
 
 // jsPEXT()
 // server ocde
-const web_server = ep()
+const host = ep()
 var port = process.env.PORT || 8000
 
-web_server.engine('handlebars', hb())
-web_server.set('view engine', 'handlebars')
+host.engine('handlebars', hb())
+host.set('view engine', 'handlebars')
 // body parser
-web_server.use(ep.urlencoded())
-web_server.use(sess({
+host.use(ep.urlencoded())
+host.use(sess({
   secret:'secret-key',
   resave: false,
   saveUninitialized: false,
@@ -30,7 +31,6 @@ web_server.use(sess({
 
 const k_ = cl.k
 const kq = k_.q
-const u_ = cl.u
 
 var [ic,osrt,okey,ii] = 
 ['ic','osrt','okey','ii']
@@ -42,10 +42,11 @@ var ia = {
   ...kq,
 }
 
-var db__ = await Promise.all(readdirSync(k_.ddir).map(async(e)=>{return{n:e}}))
+var db_a = readdirSync(k_.ddir)
+var db__ = await Promise.all(db_a.map(async(e)=>{return{n:e}}))
 
 var ddb3=cl.b3(k_.ddir+kq.dbnn)
-var b_ = ddb3.prepare(`SELECT ${okey}, ${ic} FROM ${ii} ORDER BY ${osrt}`).all()
+var b_ = cl.qa(ddb3,`SELECT ${okey}, ${ic} FROM ${ii} ORDER BY ${osrt}`)
 var la = {l_:{c:[{}],a:[{}],o:[{}],bn:cl.bibleColumns(ddb3)}}
 ddb3.close()
 
@@ -92,8 +93,49 @@ function servererrorhandling(qo,an,er){
   an.redirect('/')
 }
 
+function apierrorhandling(an,er) {
+  console.log(er);
+  an.json({e:0})  
+}
+
+host.get('/', async(qo,an)=>{
+  // an.render('trial')
+  an.sendFile(__dirname+'/client.html')
+})
+
+host.get('/api/k',async(qo,an)=>{
+  try {
+    an.json({
+      k_:k_,
+      db_a:db_a,
+      b_:b_,
+    })
+  }catch(er){apierrorhandling(an,er)}
+})
+
+host.get('/api/l_/:dbnn',async(qo,an)=>{
+  try {
+    var dbnn=qo.params.dbnn
+    an.json({
+      l:(db_a.includes(dbnn))?cl.bibleColumns(cl.b3(k_.ddir+dbnn)):false
+    })    
+  }catch(er){apierrorhandling(an,er)}
+})
+
+host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
+  try {
+    const dbnn=qo.params.dbnn
+    const b=qo.params.b
+    const c=qo.query.c
+    var db=cl.b3(k_.ddir+dbnn)
+    var r={l:cl.qa(db,(c)?`SELECT v FROM t WHERE b is ${b} AND c is ${c}`
+    :`SELECT DISTINCT c FROM t WHERE b is `+b)};db.close()
+    an.json(r)
+  } catch (er){apierrorhandling(an,er)}
+})
+
 // get request api
-web_server.get('/',async(qo,an)=>{
+host.get('/api',async(qo,an)=>{
   try {
     var s=qo.session
     var m=s.m;if(m){m=m[0]}
@@ -123,15 +165,15 @@ web_server.get('/',async(qo,an)=>{
     
     i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
 
-    var i_st=JSON.stringify(i_)
-    an.render('home',{db__,b_,i_,i_st,r})
+    // var i_st=JSON.stringify(i_)
+    an.json({db__,b_,i_,r})
 
   }catch(er){servererrorhandling(qo,an,er)}
   
 })
 
 // post request to make changes to existing i_.
-web_server.post('/', async (qo,an) => {
+host.post('/api', async (qo,an) => {
   try {
     // get i_ and m token
     var b=qo.body
@@ -162,11 +204,15 @@ web_server.post('/', async (qo,an) => {
 
 })
 
-web_server.get('/home.js', async (qo,an)=>{
-  an.sendFile(__dirname+'/home.js')
+host.get('/client.js', async (qo,an)=>{
+  an.sendFile(__dirname+'/client.js')
 })
 
-web_server.listen(port,()=>{
+host.get('/style.css', async(qo,an)=>{
+  an.sendFile(__dirname+'/style.css')
+})
+
+host.listen(port,()=>{
   console.log(`listening on localhost:${port}`);
 })
 

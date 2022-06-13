@@ -1,54 +1,10 @@
 import sqlt3 from 'better-sqlite3'
 import bb from "bluebird"
 import pppt from 'puppeteer'
-
-import { dirname } from 'path'
-import { fileURLToPath } from 'url'
-
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+import u_ from "./utillib.js"
 
 // utill
-var jstypestr = (function (global) {
-  var cache = {};
-  return function (obj) {
-    var key;
-    return obj === null ? 'null' // null
-    : obj === global ? 'global' // window in browser or global in nodejs
-    : (key = typeof obj) !== 'object' ? key // basic: string, boolean, number, undefined, function
-    : obj.nodeType ? 'object' // DOM element
-    : cache[key = ({}).toString.call(obj)] // cached. date, regexp, error, object, array, math
-    || (cache[key] = key.slice(8, -1).toLowerCase()); // get XXXX from [object XXXX], and cache it
-  };
-}(this));
-
-function jsobjstr(o){return JSON.stringify(o, null, 4)}
-function jslogtype(o){console.log(jstypestr(o))}
-function jslogobj(o){console.log(jsobjstr(o))}
-function jsjoinkey_field(o,j=1){
-  var r='';for(var i in o){r+=((j>0)?i+' ':'')+o[i]+'\n'}return r
-}
-function jsT2DA(a){
-  return a[0].map(function(_,c){
-    return a.map(function(r){return r[c]})})
-}
-function jsCSVr(a){return `"${a.join('","')}"`}
-function jsACSV(a){return a.map(jsCSVr).join('\n')}
-function jsPEXT(c=undefined){process.exit(c)}
-function jsrn(n=12){return Math.round(Math.random()*(10**n))}
-export const u = { 
-  jstypestr,
-  jsobjstr,
-  jslogtype,
-  jslogobj,
-  jsjoinkey_field,
-  jsT2DA,
-  jsCSVr,
-  jsACSV,
-  jsPEXT,
-  jsrn,
-}
-
+export const u = u_
 
 // default variables
 const mm = 2
@@ -162,7 +118,7 @@ export function bibledbobj(b,c,a,o,bn=k.q.bn,dbnn=k.q.dbnn){
 }
 
 export function htmlfromdb(b,c,a,o,m=k.q.m,j=k.q.j,bn=k.q.bn,dbnn=k.q.dbnn){
-  return kjvhtml(jsjoinkey_field(bibledbobj(b,c,a,o,bn,dbnn),j),m)
+  return kjvhtml(u_.jsjoinkey_field(bibledbobj(b,c,a,o,bn,dbnn),j),m)
 }
 
 export function tafromdb(b,c,a,o,m=k.q.m,j=k.q.j,bn=k.q.bn,dbnn=k.q.dbnn) {
@@ -176,7 +132,7 @@ export async function qiq_(q){
   [q[qi],q[b],q[c],q[a],q[o],q[m],q[j],q[w],q[s],q[y],q[bn],q[dbnn]]
   dbnn=k.ddir+dbnn;
   var p=`${biblebn(dbnn,b)[0][k.ic]} ${c}:${a}-${o}`
-  var albn=`"${bn}"`; var wi=w-20; var _p=jsrn(8)+'_'+p; 
+  var albn=`"${bn}"`; var wi=w-20; var _p=u_.jsrn(8)+'_'+p; 
   var q=(await bibledbA(b,c,a,o,bn,dbnn,albn))
   q=await bb.map(q,async(t,i)=>{
     return{w:wi,s:s,y:y,p:_p,n:+a+i,t:t,m:m,j:j,qi:qi}})
@@ -299,7 +255,7 @@ export async function qi2l(qi){
   // console.log(qo);
   var l_=await qo2l(qo)
   // console.log(l_);
-  var l_=drawiocsvheader+jsACSV(l_)
+  var l_=drawiocsvheader+u_.jsACSV(l_)
   return l_
 }
 
@@ -310,6 +266,8 @@ export default {
   kjvhtml,
   kjvhtml_a,
   b3,
+  q_,
+  qa,
   b3q_,
   b3qa,
   bibleColumns,
