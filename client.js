@@ -41,7 +41,19 @@ async function rel_(i_,la) {
 }  
 
 // set properties of l_
-async function l_l_(f,l,i) {
+async function l_l_(f,i) {
+  var l_ = JSON.parse(document.getElementById('l_').value)
+  var i_ = JSON.parse(document.getElementById('i_').value)
+  
+  // console.log('l_',l_);
+  // console.log('i_',i_);
+
+  // console.log(JSON.parse(l_))
+  // console.log(JSON.parse(i_))
+  
+  // exit()
+  var[l,i] = [l_[i],i_[i]]
+
   // populate l.bn
   if (f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}
 
@@ -59,8 +71,13 @@ async function l_l_(f,l,i) {
   // if the first character is a, then load o_=a.slice(...)
   if(f=='a'||i.b&&i.c&&i.a){l.o=l.a.slice(i.a-1)}
   if(+i.a>+i.o){i.o=i.a};
+  
+  console.log('l_[i]',l_[i]);
+  console.log('l',l);
+  console.log();
+  console.log('i.i',i.i);
+  console.log('i',i);
 
-  db.close()
 }    
 
 function hget(d) {
@@ -72,9 +89,16 @@ function hget(d) {
 
 function ht2o(d){return JSON.parse(hget(d))}
 
-function updateview(db__,b_,i_) {
+async function updateview(i_,l_) {
   const mhbs = Handlebars.compile(document.getElementById('main').innerHTML)
-  document.getElementById('Abel').innerHTML=mhbs({db__,b_,i_}); bcao(i_)
+  const k___ = await fetchjson('/api/k')
+  const db__ = await Promise.all(k___.db_a.map(async(e)=>{return{n:e}}))
+  const b_ = k___.b_
+
+  const i_st = JSON.stringify(i_)
+  const l_st = JSON.stringify(l_)
+  
+  document.getElementById('Abel').innerHTML=mhbs({db__,b_,i_,l_,i_st,l_st}); bcao(i_)
 }
 
 async function initialise(){  
@@ -85,11 +109,7 @@ async function initialise(){
   });
   
   const k___ = await fetchjson('/api/k')
-  const db_a = k___.db_a
-  const db__ = await Promise.all(db_a.map(async(e)=>{return{n:e}}))
-  const b_ = k___.b_
-  const k_ = k___.k_
-  const kq = k_.q
+  const kq = k___.k_.q
   
   var ia_p = {b:0,c:0,a:0,o:0,}
   
@@ -113,7 +133,7 @@ async function initialise(){
 
   i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
 
-  updateview(db__,b_,i_)
+  updateview(i_,l_)
   
   return [i_,l_]
 }
@@ -192,8 +212,10 @@ function active(an='/'){
     // })
   // }
 
-  if(n.split('_')[0]=='j'){a=(e.checked)?1:0}
-  post(a,n,an)
+  var [f,i] = n.split('_')
+  if(f=='j'){a=(e.checked)?1:0}
+  l_l_(f,i)
+  // post(a,n,an)
 }
 
 // function msub(){
