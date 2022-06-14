@@ -163,7 +163,9 @@ async function buttons(an='/'){
 const ia_p={b:0,c:0,a:0,o:0,}
 const la_p={c:[{}],a:[{}],o:[{}],}
 
-async function initialise(){  
+async function initialise(){
+  updateih('qi','Initialising form...')
+
   var sdir = window.location.search
   // get query string values in JavaScript: https://stackoverflow.com/a/901144
   const qu = new Proxy(new URLSearchParams(sdir), {

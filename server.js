@@ -3,6 +3,8 @@ import ep from "express";
 import cl from "./bibledrawiolib.js";
 import u_ from "./utillib.js";
 
+import http from "http";
+
 import { readdirSync } from "fs";
 
 import { dirname } from 'path'
@@ -80,10 +82,20 @@ host.get('/api',async(qo,an)=>{
   
 })
 
-host.get('/client.js', async (qo,an)=>{
+host.get('/client.js',async(qo,an)=>{
   an.sendFile(__dirname+'/client.js')
+})
+
+// wakey wakey~
+host.get('/api/wakey',async(qo,an)=>{
+  an.json({})
 })
 
 host.listen(port,()=>{
   console.log(`listening on localhost:${port}`);
 })
+
+// wakey wakey~
+setInterval(() => {
+  http.get("http://biblepuzzles.herokuapp.com/api/wakey");
+}, 20 * 60 * 1000);
