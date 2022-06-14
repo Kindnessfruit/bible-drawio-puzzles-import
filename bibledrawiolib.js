@@ -201,7 +201,7 @@ export async function qo2l(qo){var [tu,tt]=qo
       [t[w],t[s],t[y],t[p_],t[n],t[t_],t[m],t[j],t[qi]]
       
       // joining verse number
-      if(j){t_=n+' '+t_};var l=[]
+      if(+j){t_=n+' '+t_};var l=[]
 
       if(p_){
         const bt=await kjvhtml_a(t_,0)

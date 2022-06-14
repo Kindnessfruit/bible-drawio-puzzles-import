@@ -118,7 +118,7 @@ function passive(f_=['m','j','w','s','y']){
       if(en!=''+i[f]){i[f]=en}
     })}
   );
-  updatevalue('i_',JSON.stringify(i_))
+  updatevaluejstr('i_',i_)
   console.log(document.getElementById('i_').value);
   console.log();
 }

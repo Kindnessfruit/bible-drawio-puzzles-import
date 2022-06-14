@@ -42,7 +42,7 @@ host.get('/', async(qo,an)=>{
 
 // api for settings
 host.get('/api/k',async(qo,an)=>{
-  try {
+  try{
     an.json({
       k_:k_,
       db_a:db_a,
@@ -53,7 +53,7 @@ host.get('/api/k',async(qo,an)=>{
 
 // api for generating bible versions
 host.get('/api/l_/:dbnn',async(qo,an)=>{
-  try {
+  try{
     var dbnn=qo.params.dbnn
     an.json({
       l:(db_a.includes(dbnn))?cl.bibleColumns(cl.b3(k_.ddir+dbnn)):false
@@ -63,7 +63,7 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
 
 // api for generating list of chapters and verses
 host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
-  try {
+  try{
     const dbnn=qo.params.dbnn
     const b=qo.params.b
     const c=qo.query.c
@@ -76,10 +76,8 @@ host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
 
 // get request api
 host.get('/api',async(qo,an)=>{
-  try {
-    an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})
-  }catch(er){apierrorhandling(an,er)}
-  
+  try{an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})}
+  catch(er){apierrorhandling(an,er)}
 })
 
 host.get('/client.js',async(qo,an)=>{
