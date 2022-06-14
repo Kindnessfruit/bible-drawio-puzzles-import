@@ -154,7 +154,7 @@ export function uc(o){
   var s = document.getElementById('s')
   var c = `
   .qi${o.qi}{
-    width: ${o.w-20-10}pt;
+    width: ${o.w-20-4}pt;
     font-size: ${o.s}pt;
     font-family: ${o.y};
   }  
