@@ -11,42 +11,34 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
-// jsPEXT()
-// server ocde
 const host = ep()
 var port = process.env.PORT || 8000
 
 const k_ = cl.k
 const kq = k_.q
+const db_a = readdirSync(k_.ddir)
 
 var [ic,osrt,okey,ii] = 
 ['ic','osrt','okey','ii']
 var [ic,osrt,okey,ii] = 
 [k_[ic],k_[osrt],k_[okey],k_[ii]]
 
-var ia = {
-  b:0,c:0,a:0,o:0,
-  ...kq,
-}
-
-var db_a = readdirSync(k_.ddir)
-var db__ = await Promise.all(db_a.map(async(e)=>{return{n:e}}))
-
-var ddb3=cl.b3(k_.ddir+kq.dbnn)
-var b_ = cl.qa(ddb3,`SELECT ${okey}, ${ic} FROM ${ii} ORDER BY ${osrt}`)
-var la = {l_:{c:[{}],a:[{}],o:[{}],bn:cl.bibleColumns(ddb3)}}
+const ddb3=cl.b3(k_.ddir+kq.dbnn)
+const b_ = cl.qa(ddb3,`SELECT ${okey}, ${ic} FROM ${ii} ORDER BY ${osrt}`)
 ddb3.close()
 
+// json error handling helper
 function apierrorhandling(an,er) {
   console.log(er);
   an.json({e:0})  
 }
 
+// home page
 host.get('/', async(qo,an)=>{
-  // an.render('trial')
   an.sendFile(__dirname+'/client.html')
 })
 
+// api for settings
 host.get('/api/k',async(qo,an)=>{
   try {
     an.json({
@@ -57,6 +49,7 @@ host.get('/api/k',async(qo,an)=>{
   }catch(er){apierrorhandling(an,er)}
 })
 
+// api for generating bible versions
 host.get('/api/l_/:dbnn',async(qo,an)=>{
   try {
     var dbnn=qo.params.dbnn
@@ -66,6 +59,7 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
   }catch(er){apierrorhandling(an,er)}
 })
 
+// api for generating list of chapters and verses
 host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
   try {
     const dbnn=qo.params.dbnn
@@ -75,7 +69,7 @@ host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
     var r={l:cl.qa(db,(c)?`SELECT v FROM t WHERE b is ${b} AND c is ${c}`
     :`SELECT DISTINCT c FROM t WHERE b is `+b)};db.close()
     an.json(r)
-  } catch (er){apierrorhandling(an,er)}
+  } catch(er){apierrorhandling(an,er)}
 })
 
 // get request api

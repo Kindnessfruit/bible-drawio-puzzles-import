@@ -3,3 +3,9 @@ A small app that allows people to import scriptures into the draw.io diagram-mak
 https://www.youtube.com/watch?v=Klhz6wh0YIk
 
 https://bible-drawio-puzzles-import.herokuapp.com/
+
+## Credit:
+
+- main.db: https://github.com/scrollmapper/bible_databases
+
+- KJV (1769), sourced from: https://www.theword.net/index.php?downloads.modules&l=english
