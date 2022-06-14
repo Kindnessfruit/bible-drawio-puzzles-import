@@ -52,10 +52,11 @@
 <body>
   <h1><a href="/">import scriptures into draw.io here</a></h1>
 
-  <div id="Abel"></div>
+  <!-- <div id="Abel"></div> -->
 
-  <template id="main">
-    <form name="qi" id="qi">
+  <form name="qi" id="qi"></form>
+
+    <template id="qi__">
     {{#each l_}}
     <div id="q{{i}}_t" class="qi_t">
       <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="qi qi__ qi_u">
@@ -151,25 +152,29 @@
     </div>
     <!--  -->
     {{/each}}
-    </form>   
-    <button id="more" onclick="sendid()">more</button>
-    <button id="less" onclick="sendid()">less</button>
-    <button id="submit" onclick="sendid()">generate!</button>
-    <br><br>
-    <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
-    <textarea id="r" name="r" readonly="readonly" cols="30" rows="10">{{r}}</textarea>
-    
-    <form id="bind" method="post">
-      <input type="hidden" name="i_" id="i_" value="{{i_st}}">
-      <input type="hidden" name="l_" id="l_" value="{{l_st}}">
-      <input type="hidden" name="change" id="hiddeninput">
-    </form>
   </template>
 
+  <button id="more" onclick="buttons()">more</button>
+  <button id="less" onclick="buttons()">less</button>
+  <button id="submit" onclick="buttons()">generate!</button>
+  <br><br>
+  <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
+  <textarea id="r" name="r" readonly="readonly" cols="30" rows="10"></textarea>
+  
+  <form id="sd">
+    <input type="hidden" name="db__" id="db__">
+    <input type="hidden" name="b_" id="b_">
+    <input type="hidden" name="b_" id="kq">
+    <input type="hidden" name="b_" id="ia">
+    <input type="hidden" name="b_" id="la">
+  </form>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"
-    integrity="sha512-5SUkiwmm+0AiJEaCiS5nu/ZKPodeuInbQ7CiSrSnUHe11dJpQ8o4J1DU/rw4gxk/O+WBpGYAZbb8e17CDEoESw=="
-    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <form id="cd"></form>
+    <input type="hidden" name="i_" id="i_">
+    <input type="hidden" name="l_" id="l_">
+    <input type="hidden" name="change" id="hiddeninput">
+  <form id=""></form>
+  
   <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.js" 
     integrity="sha512-c7SfJeKRl8g7wgL+zMGX78faYVGp+NZVQ587mRLrqeLySX/qHCQOKw/iZ5Pp64DaPjvedixWC/Fe73upnhBaRA==" 
     crossorigin="anonymous" referrerpolicy="no-referrer"></script>

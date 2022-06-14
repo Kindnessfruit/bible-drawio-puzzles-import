@@ -137,38 +137,41 @@ host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
 // get request api
 host.get('/api',async(qo,an)=>{
   try {
-    var s=qo.session
-    var m=s.m;if(m){m=m[0]}
+    // var s=qo.session
+    // var m=s.m;if(m){m=m[0]}
     
     // parse or initialise i_ 
-    var qu=qo.query
-    var l=Object.entries(qu).length
-    var i_=(l)?JSON.parse(qu.i_):[{i:0,...ia}]
-    // console.log(i_);
+    // var qu=qo.query
+    // // var l=Object.entries(qu).length
+    // // var i_=(l)?JSON.parse(qu.i_):[{i:0,...ia}]
+    // // console.log(i_);
     
-    // initialise or parse l_
-    if(!(s.l_)){s.l_=await rel_(i_)};var l_=s.l_
-    // cl.u.jslogobj(l_);
+    // // initialise or parse l_
+    // if(!(s.l_)){s.l_=await rel_(i_)};var l_=s.l_
+    // // cl.u.jslogobj(l_);
     
-    // set l_ for html form
-    if(m){
-      if(m!='change'){
-        // console.log(m);
-        var [f,i]=m.split('_');l=l_[i].l_;i=i_[i];await l_l_(f,l,i)  
-      }
-    }else{
-      await l_.forEach(async(l,i)=>{l=l.l_;i=i_[i];await l_l_('',l,i)})
-    }
+    // // set l_ for html form
+    // if(m){
+    //   if(m!='change'){
+    //     // console.log(m);
+    //     var [f,i]=m.split('_');l=l_[i].l_;i=i_[i];await l_l_(f,l,i)  
+    //   }
+    // }else{
+    //   await l_.forEach(async(l,i)=>{l=l.l_;i=i_[i];await l_l_('',l,i)})
+    // }
 
-    // result
-    var r='';if(qu.r){r=await cl.qi2l(i_)}
+    // // result
+    // var r='';if(qu.r){r=await cl.qi2l(i_)}
     
-    i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
+    // i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
 
-    // var i_st=JSON.stringify(i_)
-    an.json({db__,b_,i_,r})
+    // // var i_st=JSON.stringify(i_)
+    // console.log()
+    // u_.jslogtype(qo.query.i_)
+    // console.log(await cl.qi2l(JSON.parse(qo.query.i_)));
+    an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})
 
-  }catch(er){servererrorhandling(qo,an,er)}
+  }catch(er){apierrorhandling(an,er)}
   
 })
 

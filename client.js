@@ -1,3 +1,15 @@
+function updateih(e,a) {
+  document.getElementById(e).innerHTML=a
+}
+
+function updatevalue(e,a){
+  document.getElementById(e).value=a
+}
+
+function updatevaluejstr(e,o) {
+  updatevalue(e,JSON.stringify(o))
+}
+
 async function fetchjson(d){
   const r = await fetch(d)
   return(r.ok)?await r.json()
@@ -12,11 +24,19 @@ function post(i, n = "change", an = '/') {
   document.getElementById('bind').submit();
 }  
 
+function tasetheight(h=40) {    
+  var r=document.getElementById('r')
+  r.style.height = h+"px";
+  r.style.height = (r.scrollHeight)+h+"px";
+}
+
 function bcao(i_){
   if(i_){
-    console.log(i_)
-    i_.forEach(async(e)=>{
-      Object.keys(e).forEach(async(f)=>{
+    // console.log(i_)
+    i_.forEach((e)=>{
+      // console.log(e);
+      Object.keys(e).forEach((f)=>{
+        // console.log(`${f}_${e.i}`);
         var m=document.getElementById(`${f}_${e.i}`)
         if(f!='i'){
           if(f!='l_'){m.value=e[f]}
@@ -25,10 +45,9 @@ function bcao(i_){
         }  
       })  
     })  
-  }  
-  var r=document.getElementById('r')
-  r.style.height = "40px";
-  r.style.height = (r.scrollHeight)+40 + "px";
+  }
+  tasetheight()
+  // console.log();
   // if(r.scrollHeight>r.style.height){
   // }  
 }
@@ -58,8 +77,8 @@ async function l_l_(f,l,i) {
   // exit()
   // var[l,i] = [l_[i].l_,i_[i]]
 
-  console.log('f',f);
-  console.log();
+  // console.log('f',f);
+  // console.log();
   
   // populate l.bn
   if (f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}
@@ -67,8 +86,8 @@ async function l_l_(f,l,i) {
   // if the first character is b, then load c_
   if(f=='b'||i.b){
     l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l
-    console.log("f=='b'");
-    console.log(`/api/l_/${i.dbnn}/${i.b}`);
+    // console.log("f=='b'");
+    // console.log(`/api/l_/${i.dbnn}/${i.b}`);
   }
   if(+i.c>l.c.length){i.c=1;i.a=1;i.o=1}
     
@@ -90,10 +109,10 @@ async function l_l_(f,l,i) {
   if(+i.a>+i.o){i.o=i.a};
   
   // console.log('l_[i.i]',l_[i.i]);
-  console.log('l',l);
-  console.log();
+  // console.log('l',l);
+  // console.log();
   // console.log('i.i',i.i);x
-  console.log('i',i);
+  // console.log('i',i);
 
 }
 
@@ -121,32 +140,117 @@ async function active(an='/'){
   var[i,l]=[i_[i],l_[i].l_];i[f]=a
   // console.log(i_);
   await l_l_(f,l,i)
-  // console.log('after l_l_, i_:',i_);
-  // console.log('after l_l_, l_:',l_);
-  await updateview(i_,l_)
+  console.log('after l_l_(), i_:',i_);
+  console.log('after l_l_(), l_:',l_);
+  console.log();
+  updatei_l_(i_,l_)
   // post(a,n,an)
 }
 
-function hget(d) {
-  var r=new XMLHttpRequest();
-  r.open('GET',d,false)
-  r.send(null); 
-  return r.responseText
+function passive(f_=['m','j','w','s','y']){
+  var i_=jpev('i_')
+  i_.forEach(
+    async(i)=>{f_.forEach(async(f)=>{
+      var nn=`${f}_${i.i}`; 
+      var en=document.getElementById(nn)
+      en=''+((f=='j')?+en.checked:en.value)
+      // console.log(en)
+      if(f=='j'){i[f]=+i[f]}
+      // console.log(n_,en)
+      // console.log(f,i.i,i[f],+i[f],+i[f]+'')
+      if(en!=''+i[f]){i[f]=en}
+    })}
+  );
+  // console.log(i_)
+  updatevalue('i_',JSON.stringify(i_))
+  console.log(document.getElementById('i_').value);
+  console.log();
 }
 
-function ht2o(d){return JSON.parse(hget(d))}
+async function buttons(an='/'){
+  // passive()
+  var a_id=document.activeElement.id
+  var m={b:'book',c:'chapter',a:'the starting verse',o:'the ending verse'}
+  var i_=jpev('i_');var [n,fn,fi]=[1,'',''];
+  if(a_id=='submit'){
+    var f_=['b','c','a','o']
+    i_.every((i)=>{i=i.i;f_.every((f)=>{
+        if(!document.getElementById(f+'_'+i).value){
+          n=0;fn=f;fi=i}
+        return(n)?true:false
+      });return(n)?true:false
+    })    
+    if(!n){alert(`Form incomplete. Please select ${m[fn]} from group ${fi}.`)
+       
+    }else{
+      // api call
+      
+      // console.log()
+      updateih('r',(await fetchjson('/api?i_='+JSON.stringify(i_))).r)
+      tasetheight()
+      // updateih('r', (await fetchjson('/api?i_='+i_)))
+      // post(a_id,"change",an)
+    }
+  }else{
+    var l_ = jpev('l_')
+    if(a_id=='more'){
+      i_.push({i:i_.length,...jpev('ia')})
+      l_.push({i:l_.length,...jpev('la')})
+    }
+    if(a_id=='less'){
+      i_.pop()
+      l_.pop()
+    }
+    console.log(`after "${a_id}" button press, i_:`,i_);
+    console.log(`after "${a_id}" button press, l_:`,l_);
+    console.log();
+    // console.log(Object.prototype.toString.call(i_));
+    // console.log();
+    updatei_l_(i_,l_)
+  }
 
-async function updateview(i_,l_) {
-  const mhbs = Handlebars.compile(document.getElementById('main').innerHTML)
-  const k___ = await fetchjson('/api/k')
-  const db__ = await Promise.all(k___.db_a.map(async(e)=>{return{n:e}}))
-  const b_ = k___.b_
+  // console.log(document.getElementById('i_').value)
+  // console.log(document.activeElement.id)
+}
 
-  const i_st = JSON.stringify(i_)
-  const l_st = JSON.stringify(l_)
+// function hget(d) {
+//   var r=new XMLHttpRequest();
+//   r.open('GET',d,false)
+//   r.send(null); 
+//   return r.responseText
+// }
+
+// function ht2o(d){return JSON.parse(hget(d))}
+
+function hbs_(e) {
+  return Handlebars.compile(document.getElementById(e).innerHTML)
+}
+
+const hbsq = hbs_('qi__')
+
+function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
+  // const k___ = await fetchjson('/api/k')
   
-  document.getElementById('Abel').innerHTML=mhbs({db__,b_,i_,l_,i_st,l_st}); bcao(i_)
+  // get db__, b_ from hidden form
+  if(!db__){db__=jpev('db__')}
+  if(!b_){b_=jpev('b_')}
+  // console.log('l_',l_);
+  // console.log();
+  // console.log(hbsq({db__,b_,i_,l_}));
+  // console.log();
+  // exit()
+  
+  updateih('qi',hbsq({db__,b_,i_,l_}));
+  // console.log(i_);
+  // console.log();
+  
+  bcao(i_)
+  updatevaluejstr('i_',i_)
+  updatevaluejstr('l_',l_)
 }
+
+const ia_p={b:0,c:0,a:0,o:0,}
+const la_p={c:[{}],a:[{}],o:[{}],}
 
 async function initialise(){  
   var sdir = window.location.search
@@ -156,31 +260,40 @@ async function initialise(){
   });
   
   const k___ = await fetchjson('/api/k')
+
+  const db__ = await Promise.all(k___.db_a.map(async (e) => { return { n: e } }))
+  const b_ = k___.b_
+
+  updatevaluejstr('db__',db__)
+  updatevaluejstr('b_',b_)
+
   const kq = k___.k_.q
   
-  var ia_p = {b:0,c:0,a:0,o:0,}
   
-  var ia = {
+  const ia = {
     ...ia_p,
     ...kq,
   }
   
-  var la_p={c:[{}],a:[{}],o:[{}],}
   
-  var la={l_:{
+  const la={l_:{
     ...la_p,
     bn:(await fetchjson('/api/l_/'+kq.dbnn)).l}
   }
+
+  updatevaluejstr('kq',kq)
+  updatevaluejstr('ia',ia)
+  updatevaluejstr('la',la)
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]
 
   var l_=await rel_(i_,la)
-  console.log(l_);
+  // console.log(l_);
 
-  i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
+  // i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
 
-  await updateview(i_,l_)
+  updatei_l_(i_,l_,db__,b_)
 }
 
 (async()=>{await initialise()})()
@@ -199,46 +312,6 @@ async function initialise(){
 // }
 
 // // update input 'i_' in 'bind'
-// function passive(f_=['m','j','w','s','y']){
-//   var i_=geti()
-//   i_.forEach(
-//     async(i)=>{f_.forEach(async(f)=>{
-//       var n_=`${f}_${i.i}`; 
-//       var a_=document.getElementById(n_)
-//       a_=''+((f=='j')?+a_.checked:a_.value)
-//       // console.log(a_)
-//       if(f=='j'){i[f]=+i[f]}
-//       // console.log(n_,a_)
-//       // console.log(f,i.i,i[f],+i[f],+i[f]+'')
-//       if(a_!=''+i[f]){i[f]=a_}
-//     })}
-//   );
-//   // console.log(i_)
-//   document.getElementById('i_').value=JSON.stringify(i_)
-// }
-
-// function sendid(an='/'){
-//   u_i_()
-//   var a_id=document.activeElement.id
-//   var [n,fn,fi]=[1,'',''];
-//   if(a_id=='submit'){
-//     var i_=geti();var f_=['b','c','a','o']
-//     i_.every((i)=>{i=i.i;f_.every((f)=>{
-//         if(!document.getElementById(f+'_'+i).value){
-//           n=0;fn=f;fi=i}
-//         return(n)?true:false
-//       });return(n)?true:false
-//     })
-//   }
-
-//   fn={b:'book',c:'chapter',a:'the starting verse',o:'the ending verse'}[fn]
-
-//   if(a_id=='submit'&&!n){
-//     alert(`Form incomplete. Please select ${fn} from group ${fi}.`)}
-//   else{post(a_id,"change",an)}
-//   // console.log(document.getElementById('i_').value)
-//   // console.log(document.activeElement.id)
-// }
 
 // function msub(){
 //   var f=document.getElementById('qi')
