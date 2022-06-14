@@ -2,7 +2,7 @@ A small app that allows people to import scriptures into the draw.io diagram-mak
 
 https://www.youtube.com/watch?v=Klhz6wh0YIk
 
-https://bible-drawio-puzzles-import.herokuapp.com/
+https://biblepuzzles.herokuapp.com/
 
 ## Credit:
 
