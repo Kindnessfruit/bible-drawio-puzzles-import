@@ -84,10 +84,6 @@ host.get('/client.js', async (qo,an)=>{
   an.sendFile(__dirname+'/client.js')
 })
 
-host.get('/style.css', async(qo,an)=>{
-  an.sendFile(__dirname+'/style.css')
-})
-
 host.listen(port,()=>{
   console.log(`listening on localhost:${port}`);
 })
