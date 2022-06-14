@@ -140,6 +140,7 @@ async function buttons(an='/'){
     }else{
       // api call
       updateih('r','loading...')
+      tasetheight()
       updateih('r',(await fetchjson('/api?i_='+JSON.stringify(i_))).r)
       tasetheight()
     }
