@@ -179,7 +179,7 @@ async function initialise(){
   updatevaluejstr('db__',db__)
   updatevaluejstr('b_',b_)
 
-  const kq = k___.k_.q  
+  const kq = k___.k_.q
   const ia = {
     ...ia_p,
     ...kq,

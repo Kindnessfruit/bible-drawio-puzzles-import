@@ -229,7 +229,7 @@ export async function qo2l(qo){var [tu,tt]=qo
         hpos=30;
       }else{t[2]+=hpos;hpos+=+t[0]+10}      
       // update left
-      if(!+t[3]){t[3]+=lpos;lpos+=+t[4]+10}
+      if(!+t[3]){t[3]+=lpos;lpos+=+t[4]+40}
       // update swimlane height on last row
       if(i==tt.length-1){tt[h_id][0]=hpos}
     })
