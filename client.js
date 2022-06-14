@@ -31,7 +31,7 @@ function bcao(i_){
   r.style.height = (r.scrollHeight)+40 + "px";
   // if(r.scrollHeight>r.style.height){
   // }  
-}  
+}
 
 // reload l_
 async function rel_(i_,la) {
@@ -40,10 +40,14 @@ async function rel_(i_,la) {
   }))  
 }  
 
+function jpev(i) {
+  return JSON.parse(document.getElementById(i).value)
+}
+
 // set properties of l_
-async function l_l_(f,i) {
-  var l_ = JSON.parse(document.getElementById('l_').value)
-  var i_ = JSON.parse(document.getElementById('i_').value)
+async function l_l_(f,l,i) {
+  // var l_ = JSON.parse(document.getElementById('l_').value)
+  // var i_ = JSON.parse(document.getElementById('i_').value)
   
   // console.log('l_',l_);
   // console.log('i_',i_);
@@ -52,19 +56,32 @@ async function l_l_(f,i) {
   // console.log(JSON.parse(i_))
   
   // exit()
-  var[l,i] = [l_[i],i_[i]]
+  // var[l,i] = [l_[i].l_,i_[i]]
 
+  console.log('f',f);
+  console.log();
+  
   // populate l.bn
   if (f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}
-
+  
   // if the first character is b, then load c_
   if(f=='b'||i.b){
-    l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
-    if(+i.c>l.c.length){i.c=1;i.a=1;i.o=1}
+    l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l
+    console.log("f=='b'");
+    console.log(`/api/l_/${i.dbnn}/${i.b}`);
+  }
+  if(+i.c>l.c.length){i.c=1;i.a=1;i.o=1}
     
+  // console.log(l);
+  // exit()  
   // if the first character is c, then load a_
   if(f=='c'||i.b&&i.c){
     l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l}
+      
+  // console.log(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`);
+  // var tp = (await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`))
+  // console.log(tp);
+
   if(+i.a>l.a.length){i.a=1;i.o=1}
   if(+i.o>l.a.length){i.o=1}
   
@@ -72,13 +89,43 @@ async function l_l_(f,i) {
   if(f=='a'||i.b&&i.c&&i.a){l.o=l.a.slice(i.a-1)}
   if(+i.a>+i.o){i.o=i.a};
   
-  console.log('l_[i]',l_[i]);
+  // console.log('l_[i.i]',l_[i.i]);
   console.log('l',l);
   console.log();
-  console.log('i.i',i.i);
+  // console.log('i.i',i.i);x
   console.log('i',i);
 
-}    
+}
+
+async function active(an='/'){
+  var e = document.activeElement
+  var [n,a]=[e.id,e.value]
+
+  
+  // update 'w','s' 
+  // if(!a){
+    // JSON.parse(document.getElementById('i_').value).every(
+      // async(i)=>{var b=0;['w','s'].every(async(f)=>{
+        // var n_=`${f}_${i.i}`; 
+        // var a_=document.getElementById(n_).value
+        // if(+a_!=+i[f]){n=n_;a=a_;b=1;return false}
+        // else{return true}
+      // })
+      // return(b==0)
+    // })
+  // }
+  
+  if(f=='j'){a=(e.checked)?1:0}
+  var [f,i]=n.split('_')
+  var [i_,l_]=[jpev('i_'),jpev('l_')]
+  var[i,l]=[i_[i],l_[i].l_];i[f]=a
+  // console.log(i_);
+  await l_l_(f,l,i)
+  // console.log('after l_l_, i_:',i_);
+  // console.log('after l_l_, l_:',l_);
+  await updateview(i_,l_)
+  // post(a,n,an)
+}
 
 function hget(d) {
   var r=new XMLHttpRequest();
@@ -133,9 +180,7 @@ async function initialise(){
 
   i_=await Promise.all(i_.map(async(e,i)=>{return{...e,l_:l_[i].l_}}))
 
-  updateview(i_,l_)
-  
-  return [i_,l_]
+  await updateview(i_,l_)
 }
 
 (async()=>{await initialise()})()
@@ -154,7 +199,7 @@ async function initialise(){
 // }
 
 // // update input 'i_' in 'bind'
-// function u_i_(f_=['m','j','w','s','y']){
+// function passive(f_=['m','j','w','s','y']){
 //   var i_=geti()
 //   i_.forEach(
 //     async(i)=>{f_.forEach(async(f)=>{
@@ -194,29 +239,6 @@ async function initialise(){
 //   // console.log(document.getElementById('i_').value)
 //   // console.log(document.activeElement.id)
 // }
-
-function active(an='/'){
-  var e = document.activeElement
-  var [n,a]=[e.id,e.value]
-
-  // update 'w','s' 
-  // if(!a){
-    // JSON.parse(document.getElementById('i_').value).every(
-      // async(i)=>{var b=0;['w','s'].every(async(f)=>{
-        // var n_=`${f}_${i.i}`; 
-        // var a_=document.getElementById(n_).value
-        // if(+a_!=+i[f]){n=n_;a=a_;b=1;return false}
-        // else{return true}
-      // })
-      // return(b==0)
-    // })
-  // }
-
-  var [f,i] = n.split('_')
-  if(f=='j'){a=(e.checked)?1:0}
-  l_l_(f,i)
-  // post(a,n,an)
-}
 
 // function msub(){
 //   var f=document.getElementById('qi')
