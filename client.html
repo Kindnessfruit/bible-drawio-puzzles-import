@@ -7,9 +7,15 @@
   <title>Bible is a puzzle, amen.</title>
   <style id="s">
     body{font-family: 'Helvetica';}
+    .ii{
+      width: 21px;
+      text-align: center;
+      /* transform: translate(0,30%); */
+    }
     .qi__{
+      vertical-align: middle;
       display: inline-block;
-      }
+    }
     .qi{
       width: 670px;
       max-width: calc(98%);
@@ -27,7 +33,9 @@
     .c{width: 70px;}
     .a{width: 70px;}
     .o{width: 56px;}
-    select{width: 100%;}
+    select{
+      width: 100%;
+    }
     select[name="m"]{width: 300px;}
     .wsi{width: 80px;}
     select[name="y"]{width: 120px;}
@@ -39,7 +47,7 @@
     .CO{font-family: 'Courier New';}
     .GE{font-family: 'Georgia';}
     .OL{font-family: 'Lucida Console';}
-    .TA{font-family: 'Tahoma';}        
+    .TA{font-family: 'Tahoma';}
     textarea{
       width: 98%;
       resize: none;      
@@ -59,11 +67,12 @@
     <template id="qi__">
     {{#each l_}}
     <div id="q{{i}}_t" class="qi_t">
+      <div id="i{{i}}" class="ii qi__">{{i}}</div>
       <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="qi qi__ qi_u">
-        {{i}}
         <div class="qi__ dbnn">
           <label for="dbnn">database</label><br>
           <select name="dbnn" id="dbnn_{{i}}">
+            <!-- <option value="none">--database--</option> -->
             {{#each ../db__}}
             <option value={{n}}>{{n}}</option>
             {{/each}}
@@ -72,6 +81,7 @@
         <div class="qi__ bn">
           <label for="bn">Bible Version</label><br>
           <select name="bn" id="bn_{{i}}">
+            <!-- <option value="none">--Bible Version--</option> -->
             {{#each l_.bn}}
             <option value="{{n}}">{{n}}</option>
             {{/each}}
@@ -81,14 +91,16 @@
         <div class="qi__ b">
           <label for="b">Book</label><br>
           <select name="b" id="b_{{i}}">
+            <option value=0>Book</option>
             {{#each ../b_}}
-            <option value={{oe}}>{{title_short}}</option>
+            <!-- <option value={{oe}}>{{title_short}}</option> -->
             {{/each}}
           </select>
         </div>
         <div class="qi__ cao c">
           <label for="c">Chapter</label><br>
           <select name="c" id="c_{{i}}">
+            <option value=0>Chapter</option>
             {{#each l_.c}}
             <option value={{c}}>{{c}}</option>
             {{/each}}
@@ -97,6 +109,7 @@
         <div class="qi__ cao a" onauxclick="ohandler()">
           <label for="a">Begins in</label><br>
           <select name="a" id="a_{{i}}">
+            <!-- <option value=0>Begins with</option> -->
             {{#each l_.a}}
             <option value={{v}}>{{v}}</option>
             {{/each}}
@@ -105,6 +118,7 @@
         <div class="qi__ cao o">
           <label for="o">ends in</label><br>
           <select name="o" id="o_{{i}}" onauxclick="ohandler()">
+            <!-- <option value=0>ends in</option> -->
             {{#each l_.o}}
             <option value={{v}}>{{v}}</option>
             {{/each}}
@@ -116,6 +130,7 @@
         <div class="qi__">
           <label for="m">mode</label><br>
           <select name="m" id="m_{{i}}" class="">
+            <!-- <option value=4>display mode</option> -->
             <option value=1>1. KJV texts with italic</option>
             <option value=2>2. plus Red texts on the words of Jesus Christ</option>
             <option value=3>3. plus reference to Strong's number (at biblehub.com)</option>
@@ -137,6 +152,7 @@
         <div class="qi__">
           <label for="y">font</label><br>
           <select name="y" id="y_{{i}}">
+            <option value="none">font</option>
             <option class="HE" value="Helvetica">Helvetica</option>
             <option class="VE" value="Verdana">Verdana</option>
             <option class="TN" value="Times New Roman">Times New Roman</option>

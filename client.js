@@ -57,19 +57,19 @@ function bcao(i_){
 // set properties of l_
 async function l_l_(f,i,l,u=1) {  
   // populate l.bn
-  if (u&&f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}  //
+  if(u&&f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l} //
 
   // future: change the list of options of the loading column to [{appropriatekey:'loading'}]
   
   // if the first character is b, then load c_
-  if(u&&f=='b'||+i.b){                                            //
+  if(u&&f=='b'||+i.b){                                          //
     l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
   if(u&&+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
   // load chapter 1 of the book when it's been selected for the first time.
   if(u&&f=='b'){if(!+i.c){i.c=1}}
 
   // if the first character is c, then load a_
-  if(u&&f=='c'||+i.b&&+i.c){                                      //
+  if(u&&f=='c'||+i.b&&+i.c){                                    //
     l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l
   }
   // load the beginning and the end verse of a chapter when a chapter is selected,
