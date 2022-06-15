@@ -141,7 +141,7 @@ function ohandler(){
   updatevaluejstr('i_',i_)
   updatevalue('o_'+i,a)
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 
   console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
   console.log();
@@ -162,7 +162,7 @@ async function active(){
   console.log();
   updatei_l_(i_,l_)
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
 function passive(f_=['m','j','w','s','y']){
@@ -180,7 +180,7 @@ function passive(f_=['m','j','w','s','y']){
   console.log(ea('i_'));
   console.log();
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
 async function getresults(i_){
@@ -222,7 +222,7 @@ async function buttons(){
     console.log();
     updatei_l_(i_,l_)
 
-    whpushstate('/?i_=' + JSON.stringify(i_))
+    // whpushstate('/?i_=' + JSON.stringify(i_))
   }
 }
 
