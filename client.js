@@ -256,20 +256,13 @@ async function initialise(){
   updatevaluejstr('kq',kq)
   updatevaluejstr('ia',ia)
   updatevaluejstr('la',la)
-
-  // console.log(qu.i_);
-  // console.log(Object.prototype.toString.call(qu.i_));
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]
-  // console.log(i_);
-  // console.log(Object.prototype.toString.call(i_));
 
   if(+qu.r){getresults(i_)}
 
   var l_=await rel_(i_,la)
-
-  console.log('l_',l_);
 
   updatei_l_(i_,l_,db__,b_)
 }
