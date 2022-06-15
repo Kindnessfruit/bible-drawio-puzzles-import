@@ -141,6 +141,8 @@ function ohandler(){
   updatevaluejstr('i_',i_)
   updatevalue('o_'+i,a)
 
+  whpushstate('/?i_='+JSON.stringify(i_))
+
   console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
   console.log();
 }
