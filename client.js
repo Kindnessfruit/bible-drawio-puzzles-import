@@ -22,6 +22,10 @@ function jpev(i) {
   return JSON.parse(ea(i))
 }
 
+function whpushstate(u){
+  window.history.pushState({},'',u)
+}
+
 async function fetchjson(d){
   const r = await fetch(d)
   return(r.ok)?await r.json()
@@ -50,15 +54,8 @@ function bcao(i_){
   tasetheight()
 }
 
-// reload l_
-async function rel_(i_,la) {
-  return await Promise.all(i_.map(async(i)=>{
-    return {i:i.i,l_:(i.l_)?i.l_:la.l_} //
-  }))  
-}  
-
 // set properties of l_
-async function l_l_(f,l,i) {  
+async function l_l_(f,i,l) {  
   // populate l.bn
   if (f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}
 
@@ -90,17 +87,31 @@ async function l_l_(f,l,i) {
   if(+i.a>+i.o){i.o=i.a};
 }
 
-function ohandler(){
-  const n=document.activeElement.id
-  const i=n.split('_')[1]
-  const a=ea('a_'+i)
+function appendCounter(e,n,d,i_id='counter') {
+  var t=n+'/'+d
+  var c=dget(i_id)
+  if(c){updateih(i_id,t)}
+  else{c=Object.assign(
+      document.createElement('div'),
+      {id:i_id,innerHTML:t}
+    )
+    document.getElementById(e).appendChild(c)
+}}
 
-  var i_=jpev('i_');i_[i].o=a
-  updatevaluejstr('i_',i_)
-  updatevalue('o_'+i,a)
-
-  console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
-  console.log();
+// reload l_
+async function rel_(i_,la=undefined){
+  if(!la){la=jpev('la')}
+  var d=i_.length*4
+  var n=0;appendCounter('qi',n,d)
+  return await Promise.all(i_.map(async(i)=>{
+    var l={...la.l_};
+    t=['dbnn','b','c','a',];
+    for(ti in t){var f=t[ti]
+      if(+i[f]){await l_l_(f,i,l)}
+      n++;appendCounter('qi',n,d)
+    }
+    return {i:i.i,l_:l}
+  }))
 }
 
 function hbs_(e){
@@ -121,7 +132,20 @@ function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
   updatevaluejstr('l_',l_)
 }
 
-async function active(an='/'){
+function ohandler(){
+  const n=document.activeElement.id
+  const i=n.split('_')[1]
+  const a=ea('a_'+i)
+
+  var i_=jpev('i_');i_[i].o=a
+  updatevaluejstr('i_',i_)
+  updatevalue('o_'+i,a)
+
+  console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
+  console.log();
+}
+
+async function active(){
   var e=document.activeElement
   var [n,a]=[e.id,e.value]
   
@@ -130,11 +154,13 @@ async function active(an='/'){
   var [i_,l_]=[jpev('i_'),jpev('l_')]
   var[i,l]=[i_[i],l_[i].l_];i[f]=a
   
-  await l_l_(f,l,i)
+  await l_l_(f,i,l)
   console.log('after l_l_(), i_:',i_);
   console.log('after l_l_(), l_:',l_);
   console.log();
   updatei_l_(i_,l_)
+
+  whpushstate('/?i_='+JSON.stringify(i_))
 }
 
 function passive(f_=['m','j','w','s','y']){
@@ -151,9 +177,18 @@ function passive(f_=['m','j','w','s','y']){
   updatevaluejstr('i_',i_)
   console.log(ea('i_'));
   console.log();
+
+  whpushstate('/?i_='+JSON.stringify(i_))
 }
 
-async function buttons(an='/'){
+async function getresults(i_){
+  updateih('r','loading...')
+  tasetheight()
+  updateih('r',(await fetchjson('/api?i_='+JSON.stringify(i_))).r)
+  tasetheight()
+}
+
+async function buttons(){
   var a_id=document.activeElement.id
   var m={b:'book',c:'chapter',a:'the starting verse',o:'the ending verse'}
   var i_=jpev('i_');var [n,fn,fi]=[1,'',''];
@@ -164,14 +199,11 @@ async function buttons(an='/'){
         return(n)?true:false
       });return(n)?true:false
     })    
-    if(!n){alert(`Form incomplete. Please select ${m[fn]} from group ${fi}.`)
-       
-    }else{
+    if(!n){alert(`Form incomplete. Please select ${m[fn]} from group ${fi}.`)}
+    else{
       // api call
-      updateih('r','loading...')
-      tasetheight()
-      updateih('r',(await fetchjson('/api?i_='+JSON.stringify(i_))).r)
-      tasetheight()
+      whpushstate('/?i_='+JSON.stringify(i_)+'&r=1')
+      getresults(i_)
     }
   }else{
     var l_ = jpev('l_')
@@ -187,6 +219,8 @@ async function buttons(an='/'){
     console.log(`after "${a_id}" button press, l_:`,l_);
     console.log();
     updatei_l_(i_,l_)
+
+    whpushstate('/?i_=' + JSON.stringify(i_))
   }
 }
 
@@ -203,7 +237,7 @@ async function initialise(){
   });
   
   const k___ = await fetchjson('/api/k')
-  const db__ = await Promise.all(k___.db_a.map(async (e) => { return { n: e } }))
+  const db__ = await Promise.all(k___.db_a.map(async(e)=>{return{n:e}}))
   const b_ = k___.b_
 
   updatevaluejstr('db__',db__)
@@ -222,11 +256,20 @@ async function initialise(){
   updatevaluejstr('kq',kq)
   updatevaluejstr('ia',ia)
   updatevaluejstr('la',la)
+
+  // console.log(qu.i_);
+  // console.log(Object.prototype.toString.call(qu.i_));
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]
+  // console.log(i_);
+  // console.log(Object.prototype.toString.call(i_));
+
+  if(+qu.r){getresults(i_)}
 
   var l_=await rel_(i_,la)
+
+  console.log('l_',l_);
 
   updatei_l_(i_,l_,db__,b_)
 }
