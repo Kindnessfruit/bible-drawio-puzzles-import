@@ -74,7 +74,8 @@ export function kjvhtml (tt, m=k.m) {
   return tt
 }
 
-export function b3(dbnn){return new sqlt3(dbnn)}
+// readonly access for the entire app.
+export function b3(dbnn){return new sqlt3(dbnn, {readonly:true})}
 
 export function q_(db,q){return db.prepare(q)}
 
