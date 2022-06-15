@@ -1,3 +1,11 @@
+function dget(e){
+  return document.getElementById(e)
+}
+
+function ea(e){
+  return dget(e).value
+}
+
 function updateih(e,a) {
   document.getElementById(e).innerHTML=a
 }
@@ -11,7 +19,7 @@ function updatevaluejstr(e,o) {
 }
 
 function jpev(i) {
-  return JSON.parse(document.getElementById(i).value)
+  return JSON.parse(ea(i))
 }
 
 async function fetchjson(d){
@@ -21,7 +29,7 @@ async function fetchjson(d){
 }
 
 function tasetheight(h=40) {    
-  var r=document.getElementById('r')
+  var r=dget('r')
   r.style.height = h+"px";
   r.style.height = (r.scrollHeight)+h+"px";
 }
@@ -30,7 +38,7 @@ function bcao(i_){
   if(i_){
     i_.forEach((e)=>{
       Object.keys(e).forEach((f)=>{
-        var m=document.getElementById(`${f}_${e.i}`)
+        var m=dget(`${f}_${e.i}`)
         if(f!='i'){
           if(f!='l_'){m.value=e[f]}
           if(f=='j'){m.checked=(+e[f])
@@ -59,22 +67,44 @@ async function l_l_(f,l,i) {
   // if the first character is b, then load c_
   if(f=='b'||i.b){
     l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
-  if(+i.c>l.c.length){i.c=1;i.a=1;i.o=1}
+  if(+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
+  // load chapter 1 of the book when it's been selected for the first time.
+  if(f=='b'){if(!+i.c){i.c=1}}
 
   // if the first character is c, then load a_
   if(f=='c'||i.b&&i.c){
-    l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l}
-
-  if(+i.a>l.a.length){i.a=1;i.o=1}
-  if(+i.o>l.a.length){i.o=1}
+    l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l
+  }
+  // load the beginning and the end verse of a chapter when a chapter is selected,
+  // when the verses themselves have not been selected.
+  if(f=='c'){if(!+i.a){i.a=1};if(!+i.o){i.o=l.a.length}}
+  
+  // if the prior selections exceeded the number of verses available in the current chapter,
+  // then reset verses according to the current chapter.
+  if(+i.a>l.a.length){i.a=1;i.o=l.a.length}
+  if(+i.o>l.a.length){i.o=l.a.length}
   
   // if the first character is a, then load o_=a.slice(...)
   if(f=='a'||i.b&&i.c&&i.a){l.o=l.a.slice(i.a-1)}
+  if(f=='a'){if(!+i.o){i.o=l.a.length}}
   if(+i.a>+i.o){i.o=i.a};
 }
 
+function ohandler(){
+  const n=document.activeElement.id
+  const i=n.split('_')[1]
+  const a=ea('a_'+i)
+
+  var i_=jpev('i_');i_[i].o=a
+  updatevaluejstr('i_',i_)
+  updatevalue('o_'+i,a)
+
+  console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
+  console.log();
+}
+
 function hbs_(e){
-  return Handlebars.compile(document.getElementById(e).innerHTML)
+  return Handlebars.compile(dget(e).innerHTML)
 }
 
 const hbsq = hbs_('qi__')
@@ -92,7 +122,7 @@ function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
 }
 
 async function active(an='/'){
-  var e = document.activeElement
+  var e=document.activeElement
   var [n,a]=[e.id,e.value]
   
   if(f=='j'){a=(e.checked)?1:0}
@@ -112,14 +142,14 @@ function passive(f_=['m','j','w','s','y']){
   i_.forEach(
     async(i)=>{f_.forEach(async(f)=>{
       var nn=`${f}_${i.i}`; 
-      var en=document.getElementById(nn)
+      var en=dget(nn)
       en=''+((f=='j')?+en.checked:en.value)
       if(f=='j'){i[f]=+i[f]}
       if(en!=''+i[f]){i[f]=en}
     })}
   );
   updatevaluejstr('i_',i_)
-  console.log(document.getElementById('i_').value);
+  console.log(ea('i_'));
   console.log();
 }
 
@@ -130,8 +160,7 @@ async function buttons(an='/'){
   if(a_id=='submit'){
     var f_=['b','c','a','o']
     i_.every((i)=>{i=i.i;f_.every((f)=>{
-        if(!document.getElementById(f+'_'+i).value){
-          n=0;fn=f;fi=i}
+        if(!ea(f+'_'+i)){n=0;fn=f;fi=i}
         return(n)?true:false
       });return(n)?true:false
     })    

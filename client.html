@@ -94,7 +94,7 @@
             {{/each}}
           </select>
         </div> 
-        <div class="qi__ cao a">
+        <div class="qi__ cao a" onauxclick="ohandler()">
           <label for="a">Begins in</label><br>
           <select name="a" id="a_{{i}}">
             {{#each l_.a}}
@@ -104,7 +104,7 @@
         </div>
         <div class="qi__ cao o">
           <label for="o">ends in</label><br>
-          <select name="o" id="o_{{i}}">
+          <select name="o" id="o_{{i}}" onauxclick="ohandler()">
             {{#each l_.o}}
             <option value={{v}}>{{v}}</option>
             {{/each}}
