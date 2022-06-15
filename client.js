@@ -55,36 +55,36 @@ function bcao(i_){
 }
 
 // set properties of l_
-async function l_l_(f,i,l) {  
+async function l_l_(f,i,l,u=1) {  
   // populate l.bn
-  if (f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}
+  if (u&&f=='dbnn'){l.bn=(await fetchjson('/api/l_/'+i.dbnn)).l}  //
 
   // future: change the list of options of the loading column to [{appropriatekey:'loading'}]
   
   // if the first character is b, then load c_
-  if(f=='b'||i.b){
+  if(u&&f=='b'||+i.b){                                            //
     l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
-  if(+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
+  if(u&&+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
   // load chapter 1 of the book when it's been selected for the first time.
-  if(f=='b'){if(!+i.c){i.c=1}}
+  if(u&&f=='b'){if(!+i.c){i.c=1}}
 
   // if the first character is c, then load a_
-  if(f=='c'||i.b&&i.c){
+  if(u&&f=='c'||+i.b&&+i.c){                                      //
     l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l
   }
   // load the beginning and the end verse of a chapter when a chapter is selected,
   // when the verses themselves have not been selected.
-  if(f=='c'){if(!+i.a){i.a=1};if(!+i.o){i.o=l.a.length}}
+  if(u&&f=='c'){if(!+i.a){i.a=1};if(!+i.o){i.o=l.a.length}}
   
   // if the prior selections exceeded the number of verses available in the current chapter,
   // then reset verses according to the current chapter.
-  if(+i.a>l.a.length){i.a=1;i.o=l.a.length}
-  if(+i.o>l.a.length){i.o=l.a.length}
+  if(u&&+i.a>l.a.length){i.a=1;i.o=l.a.length}
+  if(u&&+i.o>l.a.length){i.o=l.a.length}
   
   // if the first character is a, then load o_=a.slice(...)
-  if(f=='a'||i.b&&i.c&&i.a){l.o=l.a.slice(i.a-1)}
-  if(f=='a'){if(!+i.o){i.o=l.a.length}}
-  if(+i.a>+i.o){i.o=i.a};
+  if(u&&f=='a'||+i.b&&+i.c&&+i.a){l.o=l.a.slice(i.a-1)}
+  if(u&&f=='a'){if(!+i.o){i.o=l.a.length}}
+  if(u&&+i.a>+i.o){i.o=i.a};
 }
 
 function appendCounter(e,n,d,i_id='counter') {
@@ -107,7 +107,7 @@ async function rel_(i_,la=undefined){
     var l={...la.l_};
     t=['dbnn','b','c','a',];
     for(ti in t){var f=t[ti]
-      if(+i[f]){await l_l_(f,i,l)}
+      if(+i[f]){await l_l_(f,i,l,0)}
       n++;appendCounter('qi',n,d)
     }
     return {i:i.i,l_:l}
