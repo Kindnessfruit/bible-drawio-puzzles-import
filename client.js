@@ -63,14 +63,16 @@ async function l_l_(f,i,l,u=1) {
   
   // if the first character is b, then load c_
   if(u&&f=='b'||+i.b){                                            //
-    l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
+    l.c=await Promise.all(
+      Object.keys(jpev('menu')[i.b]).map(async(c)=>{return{c:c}}))
+  }
   if(u&&+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
   // load chapter 1 of the book when it's been selected for the first time.
   if(u&&f=='b'){if(!+i.c){i.c=1}}
 
   // if the first character is c, then load a_
   if(u&&f=='c'||+i.b&&+i.c){                                      //
-    l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l
+    l.a=await Promise.all(jpev('menu')[i.b][i.c].map(async(n)=>{return{v:n}}))
   }
   // load the beginning and the end verse of a chapter when a chapter is selected,
   // when the verses themselves have not been selected.
@@ -258,6 +260,10 @@ async function initialise(){
   updatevaluejstr('kq',kq)
   updatevaluejstr('ia',ia)
   updatevaluejstr('la',la)
+
+  const menu = await fetchjson('/api/menu.json')
+
+  updatevaluejstr('menu',menu)
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]

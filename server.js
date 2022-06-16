@@ -40,6 +40,15 @@ host.get('/', async(qo,an)=>{
   an.sendFile(__dirname+'/client.html')
 })
 
+host.get('/client.js',async(qo,an)=>{
+  an.sendFile(__dirname+'/client.js')
+})
+
+// send the whole menu instead of requesting for individual list of chapters or verses
+host.get('/api/menu.json',async(qo,an)=>{
+  an.sendFile(__dirname+"/menu.json")
+})  
+
 // api for settings
 host.get('/api/k',async(qo,an)=>{
   try{
@@ -47,9 +56,9 @@ host.get('/api/k',async(qo,an)=>{
       k_:k_,
       db_a:db_a,
       b_:b_,
-    })
-  }catch(er){apierrorhandling(an,er)}
-})
+    })    
+  }catch(er){apierrorhandling(an,er)}    
+})    
 
 // api for generating bible versions
 host.get('/api/l_/:dbnn',async(qo,an)=>{
@@ -57,36 +66,23 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
     var dbnn=qo.params.dbnn
     an.json({
       l:(db_a.includes(dbnn))?cl.bibleColumns(cl.b3(k_.ddir+dbnn)):false
-    })    
-  }catch(er){apierrorhandling(an,er)}
-})
-
-// api for generating list of chapters and verses
-host.get('/api/l_/:dbnn/:b/', async(qo,an)=>{
-  try{
-    const dbnn=qo.params.dbnn
-    const b=qo.params.b
-    const c=qo.query.c
-    var db=cl.b3(k_.ddir+dbnn)
-    var r={l:cl.qa(db,(c)?`SELECT v FROM t WHERE b is ${b} AND c is ${c}`
-    :`SELECT DISTINCT c FROM t WHERE b is `+b)};db.close()
-    an.json(r)
-  } catch(er){apierrorhandling(an,er)}
-})
+    })        
+  }catch(er){apierrorhandling(an,er)}    
+})    
 
 // get request api
 host.get('/api',async(qo,an)=>{
   try{an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})}
   catch(er){apierrorhandling(an,er)}
-})
+})    
 
-host.get('/client.js',async(qo,an)=>{
-  an.sendFile(__dirname+'/client.js')
+host.get('/api/funny',async(qo,an)=>{
+  an.redirect('https://tinyurl.com/ywf3kuhx')
 })
 
 // wakey wakey~
 host.get('/api/wakey',async(qo,an)=>{
-  an.json({})
+  an.send()
 })
 
 host.listen(port,()=>{
