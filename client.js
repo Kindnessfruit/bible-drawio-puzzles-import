@@ -229,7 +229,7 @@ async function buttons(){
 }
 
 function updateurl(){
-  whpushstate('/?i_='+JSON.stringify(jpev('i_'))+'&r=1')
+  whpushstate('/?i_='+JSON.stringify(jpev('i_')))
 }
 
 const ia_p={b:0,c:0,a:0,o:0,}
