@@ -74,10 +74,6 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
 host.get('/api',async(qo,an)=>{
   try{an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})}
   catch(er){apierrorhandling(an,er)}
-})    
-
-host.get('/api/funny',async(qo,an)=>{
-  an.redirect('https://tinyurl.com/ywf3kuhx')
 })
 
 // wakey wakey~
