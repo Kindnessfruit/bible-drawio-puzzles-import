@@ -3,3 +3,5 @@ archive
 backup
 db/test.db
 lab
+.vscode
+db/bible.db
