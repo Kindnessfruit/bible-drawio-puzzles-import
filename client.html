@@ -47,6 +47,17 @@
       overflow-wrap: normal;
     }
     .h{display: none;}
+    details{
+      display: inline-block;
+      width: 700px;
+      max-width: calc(100%);
+    }
+    summary{
+      border-bottom: 1.2px solid;
+      width: fit-content;
+      padding-right: 10px;
+      margin-bottom: 1px;
+    }
   </style>
 </head>
 <body>
@@ -112,10 +123,12 @@
         </div>
       </div>
       <!--  -->
-      <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="qi qi__ qi_l">
-        <div class="qi__">
-          <label for="m">mode</label><br>
-          <select name="m" id="m_{{i}}" class="">
+      <details>
+        <summary>{{i}} styles</summary>
+        <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="qi qi__ qi_l">
+          <div class="qi__">
+            <label for="m">mode</label><br>
+            <select name="m" id="m_{{i}}" class="">
             <option value=1>1. KJV texts with italic</option>
             <option value=2>2. plus Red texts on the words of Jesus Christ</option>
             <option value=3>3. plus reference to Strong's number (at biblehub.com)</option>
@@ -148,6 +161,7 @@
             <option class="TA" value="Tahoma">Tahoma</option>
           </select>
         </div>
+      </details>
       </div>
     </div>
     <!--  -->
