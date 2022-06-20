@@ -3,6 +3,13 @@ import bb from "bluebird"
 import pppt from 'puppeteer'
 import u_ from "./utillib.js"
 
+import { dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+
 // utill
 export const u = u_
 
@@ -14,7 +21,7 @@ const fs = 14
 const ff = "Georgia"
 const bnn = 'King James Version (1769)'
 const dbn = 'main.db'
-const dbd = './db/'
+const dbd = __dirname+'/db/'
 const icn = 'title_short'
 const osr = 'o2'
 const oky = 'oe'

@@ -40,6 +40,34 @@ host.get('/', async(qo,an)=>{
   an.sendFile(__dirname+'/client.html')
 })
 
+host.get('/Stephanous1550', async (qo, an) => {
+  an.sendFile(__dirname + '/Stephanous1550.html')
+})
+
+host.get('/Stephanous1550/:b', async (qo, an) => {
+  an.sendFile(__dirname + '/Stephanous1550.html')
+})
+
+host.get('/Stephanous1550/:b/:c', async (qo, an) => {
+  an.sendFile(__dirname + '/Stephanous1550.html')
+})
+
+host.get('/Stephanous1550', async (qo, an) => {
+  an.sendFile(__dirname + '/Stephanous1550.html')
+})
+
+host.get('/Stephanous1550.js', async (qo, an) => {
+  an.sendFile(__dirname + '/Stephanous1550.js')
+})
+
+host.get('/utillib.js', async (qo, an) => {
+  an.sendFile(__dirname + '/utillib.js')
+})
+
+host.get('/clientcommon.js',async(qo,an)=>{
+  an.sendFile(__dirname+'/clientcommon.js')
+})
+
 host.get('/client.js',async(qo,an)=>{
   an.sendFile(__dirname+'/client.js')
 })

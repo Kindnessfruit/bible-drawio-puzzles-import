@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style id="s">
+    .h{display: none;}
+  </style>
+</head>
+<body>
+  <h1>Stephanous 1550</h1>
+  <div id="main"></div>
+  <template id="bc_n">
+    <form>
+      <select name="b" id="b_{{i}}" onchange="c_c_()">
+        {{#each b_}}
+        <option value={{oe}}>{{title_short}}</option>
+        {{/each}}
+      </select>
+      <select name="c" id="c_{{i}}" onchange="n_n_()">
+        {{#each c_}}
+        <option value={{c}}>{{c}}</option>
+        {{/each}}
+      </select>
+    </form>
+    {{#each re}}
+    <p>{{field}}: {{verse}}</p>
+    {{/each}}
+  </template>
+
+  <form id="sd" class="h">
+    <input type="hidden" name="b_" id="b_">
+    <input type="hidden" name="menu" id="menu">
+  </form>
+
+  <form id="cd" class="h">
+    <input type="hidden" name="i_" id="i_">
+    <input type="hidden" name="c_" id="c_">
+  </form>
+
+
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.js" 
+    integrity="sha512-c7SfJeKRl8g7wgL+zMGX78faYVGp+NZVQ587mRLrqeLySX/qHCQOKw/iZ5Pp64DaPjvedixWC/Fe73upnhBaRA==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <!-- <script src="utillib.js"></script> -->
+  <script src="clientcommon.js"></script>
+  <script src="Stephanous1550.js"></script>
+</body>
+</html>

@@ -21,8 +21,8 @@ export function jsT2DA(a){
   return a[0].map(function(_,c){
     return a.map(function(r){return r[c]})})
 }
-export function jsCSVr(a){return `"${a.join('","')}"`}
-export function jsACSV(a){return a.map(jsCSVr).join('\n')}
+export function jsCSVr(a,dlmt='","'){return `"${a.join(dlmt)}"`}
+export function jsACSV(a,dlmt='","'){return a.map(l=>jsCSVr(l,dlmt)).join('\n')}
 export function jsPEXT(c=undefined){process.exit(c)}
 export function jsrn(n=12){return Math.round(Math.random()*(10**n))}
 export default { 
