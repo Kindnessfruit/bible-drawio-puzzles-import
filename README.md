@@ -8,4 +8,6 @@ https://biblepuzzles.herokuapp.com/
 
 - main.db: https://github.com/scrollmapper/bible_databases
 
-- KJV (1769), sourced from: https://www.theword.net/index.php?downloads.modules&l=english
+- Tyndale (1526), Stephanous 1550, KJV (1769), sourced from: https://www.theword.net/index.php?downloads.modules&l=english
+
+- Matthew (1537) sourced from: https://textusreceptusbibles.com/

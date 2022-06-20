@@ -63,14 +63,16 @@ async function l_l_(f,i,l,u=1) {
   
   // if the first character is b, then load c_
   if(u&&f=='b'||+i.b){                                            //
-    l.c=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}`)).l}
+    l.c=await Promise.all(
+      Object.keys(jpev('menu')[i.b]).map(async(c)=>{return{c:c}}))
+  }
   if(u&&+i.c>l.c.length){i.c=0;i.a=0;i.o=0}
   // load chapter 1 of the book when it's been selected for the first time.
   if(u&&f=='b'){if(!+i.c){i.c=1}}
 
   // if the first character is c, then load a_
   if(u&&f=='c'||+i.b&&+i.c){                                      //
-    l.a=(await fetchjson(`/api/l_/${i.dbnn}/${i.b}/?c=${i.c}`)).l
+    l.a=await Promise.all(jpev('menu')[i.b][i.c].map(async(n)=>{return{v:n}}))
   }
   // load the beginning and the end verse of a chapter when a chapter is selected,
   // when the verses themselves have not been selected.
@@ -141,7 +143,7 @@ function ohandler(){
   updatevaluejstr('i_',i_)
   updatevalue('o_'+i,a)
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 
   console.log(`after ohandler() on ${n}, i_:`,jpev('i_'));
   console.log();
@@ -162,7 +164,7 @@ async function active(){
   console.log();
   updatei_l_(i_,l_)
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
 function passive(f_=['m','j','w','s','y']){
@@ -180,7 +182,7 @@ function passive(f_=['m','j','w','s','y']){
   console.log(ea('i_'));
   console.log();
 
-  whpushstate('/?i_='+JSON.stringify(i_))
+  // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
 async function getresults(i_){
@@ -222,8 +224,12 @@ async function buttons(){
     console.log();
     updatei_l_(i_,l_)
 
-    whpushstate('/?i_=' + JSON.stringify(i_))
+    // whpushstate('/?i_=' + JSON.stringify(i_))
   }
+}
+
+function updateurl(){
+  whpushstate('/?i_='+JSON.stringify(jpev('i_')))
 }
 
 const ia_p={b:0,c:0,a:0,o:0,}
@@ -258,6 +264,10 @@ async function initialise(){
   updatevaluejstr('kq',kq)
   updatevaluejstr('ia',ia)
   updatevaluejstr('la',la)
+
+  const menu = await fetchjson('/api/menu.json')
+
+  updatevaluejstr('menu',menu)
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]
