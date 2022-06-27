@@ -252,7 +252,9 @@ async function buttons(){
 function updateurl(op={}){
   if(!op.i_){op.i_=jpev('i_')}
   if(!op.cm){op.cm=jpev('cust')}
-  var u=`?i_=${jstr(op.i_)}&cm=${jstr(op.cm)}`
+  var istr = encodeURIComponent(jstr(op.i_))
+  var cstr = encodeURIComponent(jstr(op.cm))
+  var u=`?i_=${istr}&cm=${cstr}`
   if(+op.r){u+='&r=1'}
   whpushstate(u)
   return u
