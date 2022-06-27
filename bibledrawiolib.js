@@ -38,41 +38,27 @@ export const k = {
 }
 
 // custom
-export async function kjvhtml_a(tt, m = k.m) {
+export function kjvhtml(tt,m=k.m){
   // m = 1, display itallic from kjv
-  tt = (m > 0) ? tt.replace(/<FI>(.*?)<Fi>/g, "<i>$1</i>") : tt
+  tt=(m>0)?tt.replace(/<FI>(.*?)<Fi>/g,"<i>$1</i>"):tt
   // m = 2, show red texts
-  tt = (m > 1) ? tt.replace(/<FR>(.*?)<Fr>/g, "<font color='red'>$1</font>") : tt
+  tt=(m>1)?tt.replace(/<FR>(.*?)<Fr>/g,"<font color='red'>$1</font>"):tt
   // m = 3, show strong's number as superscript
-  const href = 'https://biblehub.com'
-  if (m > 2) {
-    tt = tt.replace(/<WH(.*?)>/g, `<sup><a href='${href}/hebrew/$1.htm'>H$1</a></sup>`)
-    tt = tt.replace(/<WG(.*?)>/g, `<sup><a href='${href}/greek/$1.htm'>G$1</a></sup>`)
-  }
-  // remove all other tags
-  tt = tt.replace(/<RF>.*?<Rf>/g, '')
-  tt = tt.replace(/(<\/?(?:font|i|sup|a)[^>]*>)|<[^>]+>/ig, '$1')
-  // console.log(tt)
-  return tt
-}
-
-export function kjvhtml (tt, m=k.m) {
-  // m = 1, display itallic from kjv
-  tt = (m > 0) ? tt.replace(/<FI>(.*?)<Fi>/g, "<i>$1</i>") : tt
-  // m = 2, show red texts
-  tt = (m > 1) ? tt.replace(/<FR>(.*?)<Fr>/g, "<font color='red'>$1</font>") : tt
-  // m = 3, show strong's number as superscript
+  // const href='https://blueletterbible.org/lexicon/'
   const href='https://biblehub.com'
-  if (m > 2) {
-    tt = tt.replace(/<WH(.*?)>/g, `<sup><a href='${href}/hebrew/$1.htm'>H$1</a></sup>`)
-    tt = tt.replace(/<WG(.*?)>/g, `<sup><a href='${href}/greek/$1.htm'>G$1</a></sup>`)
+  if(m>2){
+    tt=tt.replace(/<WH(.*?)>/g,`<sup><a href='${href}/hebrew/$1.htm'>H$1</a></sup>`)
+    tt=tt.replace(/<WG(.*?)>/g,`<sup><a href='${href}/greek/$1.htm'>G$1</a></sup>`)
   }
   // remove all other tags
-  tt = tt.replace(/<RF>.*?<Rf>/g,'')
-  tt = tt.replace(/(<\/?(?:font|i|sup|a)[^>]*>)|<[^>]+>/ig, '$1')
+  if(m>-1){
+    tt=tt.replace(/<RF>.*?<Rf>/g,'')
+    tt=tt.replace(/(<\/?(?:font|i|sup|a)[^>]*>)|<[^>]+>/ig,'$1')
+  }
   // console.log(tt)
   return tt
 }
+export async function kjvhtml_a(tt,m=k.m){return kjvhtml(tt,m)}
 
 // readonly access for the entire app.
 export function b3(dbnn){return new sqlt3(dbnn, {readonly:true})}
@@ -128,9 +114,7 @@ export function tafromdb(b,c,a,o,m=k.q.m,j=k.q.j,bn=k.q.bn,dbnn=k.q.dbnn) {
 
 export async function qiq_(q){
   var[qi,b,c,a,o,m,j,w,s,y,bn,dbnn]= 
-  ['i','b','c','a','o','m','j','w','s','y','bn','dbnn']
-  var[qi,b,c,a,o,m,j,w,s,y,bn,dbnn]= 
-  [q[qi],q[b],q[c],q[a],q[o],q[m],q[j],q[w],q[s],q[y],q[bn],q[dbnn]]
+  [q.i,q.b,q.c,q.a,q.o,q.m,q.j,q.w,q.s,q.y,q.bn,q.dbnn]
   dbnn=k.ddir+dbnn;
   var p=`${biblebn(dbnn,b)[0][k.ic]} ${c}:${a}-${o}`
   var albn=`"${bn}"`; var wi=w-20; var _p=u_.jsrn(8)+'_'+p; 
@@ -144,6 +128,25 @@ export async function qiqo(q){
   var [q,u]=[(await bb.map(q,qiq_)),[]]
   await bb.each(q,async(i)=>{u.push(i[0])})
   q=q.flat();return [u,q]
+}
+
+export async function cmqo(c,ql=0){
+  const r = (await bb.map(c, async(o,ci)=>{
+    const p=u_.jsrn(8)+'_'+o.n;const qi=ci+ql
+    delete o.i;delete o.co;delete o.so;
+    var t=o.t.split('\n')
+    o.qi=qi;o.t=o.n;o.n=p
+    return [o,...(await bb.map(t,async(l,i)=>{
+      // return 1
+      return {w:+o.w-20,s:o.s,y:o.y,p:p,n:i,t:l,m:-1,j:0,qi:qi,}
+    }))]
+  })).flat()
+  // r=r.flat()
+  // console.log('r',r);
+  // console.log('c',c);
+  // console.log('[c,r]',[c,r]);
+  // console.log(Object.prototype.toString.call(c));
+  return [c,r]
 }
   
 export function pppe(e){
@@ -251,9 +254,17 @@ export const drawiocsvheader = `## Double # are used for comment.
 height,arcSize,top,left,width,fontSize,fontFamily,parent,partName,text,label
 `
 
-export async function qi2l(qi){
+export async function qi2l(op={qi:0,cm:0}){
+  var qi = (op.qi)?op.qi:[]
+  var cm = (op.cm)?op.cm:[]
+  // console.log('op.qi',op.qi)
+  // console.log('op.cm',op.cm)
+  // console.log('qi',qi)
+  // console.log('cm',cm)
   var qo=await qiqo(qi)
-  // console.log(qo);
+  var cm=await cmqo(op.cm,qi.length)
+  qo=[[...qo[0],...cm[0]],[...qo[1],...cm[1]]]
+  // console.log('qo',qo);
   var l_=await qo2l(qo)
   // console.log(l_);
   var l_=drawiocsvheader+u_.jsACSV(l_)
@@ -281,6 +292,7 @@ export default {
   tafromdb,
   qiq_,
   qiqo,
+  cmqo,
   pppe,
   uc,
   ucss,

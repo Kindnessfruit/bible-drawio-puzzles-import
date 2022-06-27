@@ -2,29 +2,30 @@ import ep from "express";
 
 import cl from "./bibledrawiolib.js";
 import u_ from "./utillib.js";
-
-import http from "http";
+import { exit } from "process";
 
 import { readdirSync } from "fs";
 
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 
+import http from "http";
+
+
 const host = ep()
 var port = process.env.PORT || 8000
+
+// serve client files
+const cpth = __dirname+'/client'
+host.use("/client",ep.static(cpth))
 
 const k_ = cl.k
 const kq = k_.q
 const db_a = readdirSync(k_.ddir)
 
-var [ic,osrt,okey,ii] = 
-['ic','osrt','okey','ii']
-var [ic,osrt,okey,ii] = 
-[k_[ic],k_[osrt],k_[okey],k_[ii]]
-
+var [ic,osrt,okey,ii] = [k_.ic,k_.osrt,k_.okey,k_.ii]
 const ddb3=cl.b3(k_.ddir+kq.dbnn)
 const b_ = cl.qa(ddb3,`SELECT ${okey}, ${ic} FROM ${ii} ORDER BY ${osrt}`)
 ddb3.close()
@@ -37,11 +38,7 @@ function apierrorhandling(an,er) {
 
 // home page
 host.get('/', async(qo,an)=>{
-  an.sendFile(__dirname+'/client.html')
-})
-
-host.get('/client.js',async(qo,an)=>{
-  an.sendFile(__dirname+'/client.js')
+  an.sendFile(cpth+'/client.html')
 })
 
 // send the whole menu instead of requesting for individual list of chapters or verses
@@ -72,7 +69,16 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
 
 // get request api
 host.get('/api',async(qo,an)=>{
-  try{an.json({r:await cl.qi2l(JSON.parse(qo.query.i_))})}
+  try{var r = 0
+    const qu = qo.query
+    const i_ = JSON.parse(qu.i_)
+    const cm = JSON.parse(qu.cm)
+    r=(!(!!(i_&&i_.length)^!!(cm&&cm.length)))
+    ?await cl.qi2l({qi:i_,cm:cm})
+    :((i_&&i_.length)?await cl.qi2l({qi:i_})
+    :await cl.qi2l({cm:cm}))
+    an.json({r:r})
+  }
   catch(er){apierrorhandling(an,er)}
 })
 

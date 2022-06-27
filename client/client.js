@@ -1,3 +1,18 @@
+function ae(){
+  return document.activeElement
+}
+
+function aeid(){return ae().id}
+
+function ena_(){var e=ae()
+  return [e,e.id,e.value]
+}
+
+function te() {
+  // https://stackoverflow.com/a/9012576
+  return window.event.target
+}
+
 function dget(e){
   return document.getElementById(e)
 }
@@ -14,8 +29,12 @@ function updatevalue(e,a){
   document.getElementById(e).value=a
 }
 
+function jstr(o){
+  return JSON.stringify(o)
+}
+
 function updatevaluejstr(e,o) {
-  updatevalue(e,JSON.stringify(o))
+  updatevalue(e,jstr(o))
 }
 
 function jpev(i) {
@@ -32,19 +51,22 @@ async function fetchjson(d){
   :await Promise.reject(r)
 }
 
-function tasetheight(h=40) {    
-  var r=dget('r')
-  r.style.height = h+"px";
-  r.style.height = (r.scrollHeight)+h+"px";
+function tasetheight(op={h:40,i:'r'}){
+  if(!op.h){op.h=40}
+  if(!op.i){op.i='r'}
+
+  var r=dget(op.i)
+  r.style.height = op.h+"px";
+  r.style.height = (r.scrollHeight)+op.h+"px";
 }
 
-function bcao(i_){
+function bcao(i_,cm=0){
   if(i_){
     i_.forEach((e)=>{
       Object.keys(e).forEach((f)=>{
-        var m=dget(`${f}_${e.i}`)
+        var m=`${f}_${e.i}`;if(cm){m='c '+m};m=dget(m)
         if(f!='i'){
-          if(f!='l_'){m.value=e[f]}
+          if(f!='l_'&&f!='co'&&f!='so'){m.value=e[f]}
           if(f=='j'){m.checked=(+e[f])
           }  
         }  
@@ -127,7 +149,8 @@ function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
   if(!db__){db__=jpev('db__')}
   if(!b_){b_=jpev('b_')}
   
-  updateih('qi',hbsq({db__,b_,i_,l_}));
+  updateih('qi',(i_.length)?hbsq({db__,b_,i_,l_})
+  :'No verses yet... Press "more" to select verses.');
   
   bcao(i_)
   updatevaluejstr('i_',i_)
@@ -135,7 +158,7 @@ function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
 }
 
 function ohandler(){
-  const n=document.activeElement.id
+  const n=aeid()
   const i=n.split('_')[1]
   const a=ea('a_'+i)
 
@@ -150,8 +173,7 @@ function ohandler(){
 }
 
 async function active(){
-  var e=document.activeElement
-  var [n,a]=[e.id,e.value]
+  var e=ae();var [n,a]=[e.id,e.value]
   
   if(f=='j'){a=(e.checked)?1:0}
   var [f,i]=n.split('_')
@@ -167,17 +189,13 @@ async function active(){
   // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
-function passive(f_=['m','j','w','s','y']){
+function passive(){
+  var e=te();var n=e.id
+  var [f,i]=n.split('_')
   var i_=jpev('i_')
-  i_.forEach(
-    async(i)=>{f_.forEach(async(f)=>{
-      var nn=`${f}_${i.i}`; 
-      var en=dget(nn)
-      en=''+((f=='j')?+en.checked:en.value)
-      if(f=='j'){i[f]=+i[f]}
-      if(en!=''+i[f]){i[f]=en}
-    })}
-  );
+  e=''+((f=='j')?+e.checked:e.value)
+  if(f=='j'){i_[i][f]=+i_[i][f]}
+  if(e!=''+i_[i][f]){i_[i][f]=e}
   updatevaluejstr('i_',i_)
   console.log(ea('i_'));
   console.log();
@@ -185,15 +203,16 @@ function passive(f_=['m','j','w','s','y']){
   // whpushstate('/?i_='+JSON.stringify(i_))
 }
 
-async function getresults(i_){
+async function getresults(u){
   updateih('r','loading...')
   tasetheight()
-  updateih('r',(await fetchjson('/api?i_='+JSON.stringify(i_))).r)
+  var r = (await fetchjson('/api'+u)).r
+  updateih('r',r)
   tasetheight()
 }
 
 async function buttons(){
-  var a_id=document.activeElement.id
+  var a_id=aeid()
   var m={b:'book',c:'chapter',a:'the starting verse',o:'the ending verse'}
   var i_=jpev('i_');var [n,fn,fi]=[1,'',''];
   if(a_id=='submit'){
@@ -206,8 +225,10 @@ async function buttons(){
     if(!n){alert(`Form incomplete. Please select ${m[fn]} from group ${fi}.`)}
     else{
       // api call
-      whpushstate('/?i_='+JSON.stringify(i_)+'&r=1')
-      getresults(i_)
+      // var u=`/?i_=${jstr(i_)}+&r=1`;if(cm.length){u+='#'}
+      // whpushstate(u)
+      const u=updateurl({i_:i_,cm:jpev('cust'),r:1})
+      getresults(u)
     }
   }else{
     var l_ = jpev('l_')
@@ -228,15 +249,67 @@ async function buttons(){
   }
 }
 
-function updateurl(){
-  whpushstate('/?i_='+JSON.stringify(jpev('i_')))
+function updateurl(op={}){
+  if(!op.i_){op.i_=jpev('i_')}
+  if(!op.cm){op.cm=jpev('cust')}
+  var u=`?i_=${jstr(op.i_)}&cm=${jstr(op.cm)}`
+  if(+op.r){u+='&r=1'}
+  whpushstate(u)
+  return u
 }
 
-const ia_p={b:0,c:0,a:0,o:0,}
-const la_p={c:[{}],a:[{}],o:[{}],}
+const hbsc = hbs_('cm__')
+
+function updatecm(cm) {
+  
+  updateih('cm',(cm.length)?hbsc({cm})
+  :'No custom lines yet... Press "more custom lines" for customised import.')
+
+  cm.forEach((o)=>{
+    if(dget("co_"+o.i).open!=(!!o.co)){
+      // console.log("executed co");
+      document.getElementById("co_"+o.i).open=(!!o.co)
+    }
+    if(dget("so_"+o.i).open!=(!!o.so)){
+      // console.log("executed so");
+      document.getElementById("so_"+o.i).open=(!!o.so)
+    }
+  })
+
+  bcao(cm,1)
+
+  Object.entries(document.getElementsByTagName('textarea')).forEach(
+    async(o)=>{if(o[1].id!='r'){tasetheight({h:20,i:o[1].id})}}
+  )
+
+  updatevaluejstr('cust',cm)
+}
+
+function cmpm() {
+  var p=(aeid()=='cmp_')?1:0
+  var cm = jpev('cust')
+  if(p){cm.push({i:cm.length,...jpev('ca')})}else{cm.pop()}
+
+  updatecm(cm)
+}
+
+function cmtt(c=1){
+  // https://stackoverflow.com/a/9012576
+  var e=te();var n=e.id
+  var [f,i]=n.split('_')
+  if(c){f=f.split(' ')[1]}
+  if(f=='t'){tasetheight({h:20,i:n})}
+  var cm=jpev('cust');
+  cm[i][f]=(c)?e.value:+e.open
+  updatevaluejstr('cust',cm)
+}
+
+const ia_p={b:0,c:0,a:0,o:0}
+const la_p={c:[{}],a:[{}],o:[{}]}
 
 async function initialise(){
   updateih('qi','Initialising form...')
+  updateih('cm','...')
 
   var sdir = window.location.search
   // get query string values in JavaScript: https://stackoverflow.com/a/901144
@@ -247,7 +320,6 @@ async function initialise(){
   const k___ = await fetchjson('/api/k')
   const db__ = await Promise.all(k___.db_a.map(async(e)=>{return{n:e}}))
   const b_ = k___.b_
-
   updatevaluejstr('db__',db__)
   updatevaluejstr('b_',b_)
 
@@ -260,23 +332,24 @@ async function initialise(){
     ...la_p,
     bn:(await fetchjson('/api/l_/'+kq.dbnn)).l}
   }
-
+  const ca={n:'',t:'',w:kq.w,s:kq.s,y:kq.y,co:1,so:0,}
   updatevaluejstr('kq',kq)
   updatevaluejstr('ia',ia)
   updatevaluejstr('la',la)
+  updatevaluejstr('ca',ca)
 
   const menu = await fetchjson('/api/menu.json')
-
   updatevaluejstr('menu',menu)
   
   var i_=JSON.parse(qu.i_)
   i_=(i_)?i_:[{i:0,...ia}]
-
-  if(+qu.r){getresults(i_)}
-
   var l_=await rel_(i_,la)
-
   updatei_l_(i_,l_,db__,b_)
+  
+  var cm=JSON.parse(qu.cm)
+  cm=(cm)?cm:[];updatecm(cm)
+
+  if(+qu.r){getresults(sdir)}
 }
 
 (async()=>{await initialise()})()
