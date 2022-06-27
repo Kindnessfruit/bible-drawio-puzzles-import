@@ -262,7 +262,7 @@ export async function qi2l(op={qi:0,cm:0}){
   // console.log('qi',qi)
   // console.log('cm',cm)
   var qo=await qiqo(qi)
-  var cm=await cmqo(op.cm,qi.length)
+  var cm=await cmqo(cm,qi.length)
   qo=[[...qo[0],...cm[0]],[...qo[1],...cm[1]]]
   // console.log('qo',qo);
   var l_=await qo2l(qo)
