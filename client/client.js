@@ -45,8 +45,19 @@ function whpushstate(u){
   window.history.pushState({},'',u)
 }
 
-async function fetchjson(d){
-  const r = await fetch(d)
+function asum(a){
+  // https://stackoverflow.com/a/16751601
+  return a.reduce((partialSum, e) => partialSum + e, 0)
+}
+
+function qstr(u) {
+  return new Proxy(new URLSearchParams(u),{
+    get:(searchParams,prop)=>searchParams.get(prop),
+  });
+}
+
+async function fetchjson(d,p={}){
+  const r = await fetch(d,p)
   return(r.ok)?await r.json()
   :await Promise.reject(r)
 }
@@ -206,7 +217,16 @@ function passive(){
 async function getresults(u){
   updateih('r','loading...')
   tasetheight()
-  var r = (await fetchjson('/api'+u)).r
+  // test for a specific character in the uri to determine either get or post request. (modification)
+  const c=qstr(u).cm=='n'
+  var l='/api';l+=(c)?'':u
+  const r=(await fetchjson(l,(c)?{
+    method: 'POST',
+    body: JSON.stringify({i_:jpev('i_'),cm:jpev('cust')}),
+    headers:{
+      'Content-type':'application/json; charset=UTF-8'
+    }
+  }:{})).r
   updateih('r',r)
   tasetheight()
 }
@@ -252,7 +272,10 @@ async function buttons(){
 function updateurl(op={}){
   if(!op.i_){op.i_=jpev('i_')}
   if(!op.cm){op.cm=jpev('cust')}
+  // test the size of the uri to determine uri (modification)
+  const a='https://biblepuzzles.herokuapp.com/api'
   var u=encodeURI(`?i_=${jstr(op.i_)}&cm=${jstr(op.cm)}`)
+  if(new Blob([a+u]).size>8192){u=encodeURI(`?i_=${jstr(op.i_)}&cm=n`)}
   if(+op.r){u+='&r=1'}
   whpushstate(u)
   return u
@@ -313,9 +336,7 @@ async function initialise(){
 
   var sdir = window.location.search
   // get query string values in JavaScript: https://stackoverflow.com/a/901144
-  const qu = new Proxy(new URLSearchParams(sdir), {
-    get: (searchParams, prop) => searchParams.get(prop),
-  });
+  const qu = qstr(sdir)
   
   const k___ = await fetchjson('/api/k')
   const db__ = await Promise.all(k___.db_a.map(async(e)=>{return{n:e}}))
@@ -346,7 +367,8 @@ async function initialise(){
   var l_=await rel_(i_,la)
   updatei_l_(i_,l_,db__,b_)
   
-  var cm=JSON.parse(qu.cm)
+  var cm=(qu.cm=='n')
+  ?0:JSON.parse(qu.cm)
   cm=(cm)?cm:[];updatecm(cm)
 
   if(+qu.r){getresults(sdir)}

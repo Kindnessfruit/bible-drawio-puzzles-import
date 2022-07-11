@@ -16,6 +16,9 @@ import http from "http";
 
 const host = ep()
 var port = process.env.PORT || 8000
+// body parser for custom lines post requests
+host.use(ep.urlencoded())
+host.use(ep.json())
 
 // serve client files
 const cpth = __dirname+'/client'
@@ -67,20 +70,22 @@ host.get('/api/l_/:dbnn',async(qo,an)=>{
   }catch(er){apierrorhandling(an,er)}    
 })    
 
-// get request api
-host.get('/api',async(qo,an)=>{
-  try{var r = 0
-    const qu = qo.query
-    const i_ = JSON.parse(qu.i_)
-    const cm = JSON.parse(qu.cm)
-    r=(!(!!(i_&&i_.length)^!!(cm&&cm.length)))
-    ?await cl.qi2l({qi:i_,cm:cm})
-    :((i_&&i_.length)?await cl.qi2l({qi:i_})
-    :await cl.qi2l({cm:cm}))
-    an.json({r:r})
-  }
-  catch(er){apierrorhandling(an,er)}
-})
+// get and post requests
+async function result(qo,an,p=0) {
+  try {
+    const __=(p)?qo.body:qo.query
+    const i_=(p)?__.i_:JSON.parse(__.i_)
+    const cm=(p)?__.cm:JSON.parse(__.cm)
+    an.json({
+      r:(!(!!(i_&&i_.length)^!!(cm&&cm.length)))
+        ?await cl.qi2l({qi:i_,cm:cm})
+        :((i_&&i_.length)?await cl.qi2l({qi:i_})
+        :await cl.qi2l({cm:cm}))
+    })
+  }catch(error){apierrorhandling(an,er)}
+}
+host.get('/api',async(qo,an)=>{await result(qo,an)})
+host.post('/api',async(qo,an)=>{await result(qo,an,1)})
 
 // wakey wakey~
 host.get('/api/wakey',async(qo,an)=>{
