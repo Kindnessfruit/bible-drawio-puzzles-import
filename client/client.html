@@ -12,6 +12,13 @@
 
   <!-- <div id="Abel"></div> -->
 
+  <details id="tu" class="bodr">
+    <summary id="tu_l">
+      <label for="r">tutorial: </label>
+    </summary>
+    <video src="client/tutorial.mp4" controls></video>
+  </details><br>
+
   <div name="qi" id="qi"></div>
 
   <button id="more" onclick="buttons()">more</button>
@@ -76,7 +83,7 @@
   <template id="qi__">
     {{#each l_}}
     <div id="q{{i}}_t" class="qi_t">
-      <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="qi qi__ qi_u">
+      <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="bodr qi qi__ qi_u">
         {{i}}
         <div class="qi__ dbnn">
           <label for="dbnn">database</label><br>
@@ -129,7 +136,7 @@
         </div>
       </div>
       <!--  -->
-      <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="qi qi__ qi_l">
+      <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="bodr qi qi__ qi_l">
         <div class="qi__">
           <label for="m">mode</label><br>
           <select name="m" id="m_{{i}}" class="">

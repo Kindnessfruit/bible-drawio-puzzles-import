@@ -1,11 +1,13 @@
 body{font-family: 'Helvetica';}
+.bodr{
+  max-width: calc(98%);
+  border: 1.2px solid;
+}
 .qi__{
   display: inline-block;
   }
 .qi{
   width: 670px;
-  max-width: calc(98%);
-  border: 1.2px solid;
   padding: 0px 4px 2px 4px;
   margin-bottom: 4px;
   margin-right: 7px;
@@ -39,3 +41,11 @@ textarea{
   overflow-wrap: normal;
 }
 .h{display: none;}
+#tu{width: 1369px;}
+video{
+  max-width: calc(100%);
+  border: 1.2px dashed;
+  position: relative;
+  left: 50%;
+  transform: translate(-50%,0);
+}
