@@ -20,74 +20,16 @@
   </details><br>
 
   <div name="qi" id="qi"></div>
-
-  <button id="more" onclick="buttons()">more</button>
-  <button id="less" onclick="buttons()">less</button>
-  <button id="update" onclick="updateurl()">update url</button>
-  <br><br>
-  
-  <div id="cm">No custom lines yet... Press "more custom lines" for customised import.</div>
-  
-  <template id="cm__">
-    <div id="cm_n">Custom lines:</div>
-    {{#each cm}}
-    <details id="co_{{i}}" ontoggle="cmtt(0)" onchange="cmtt()" open>
-      <summary>  
-        <label for="c n_{{i}}">Group {{i}}:</label>
-        <input name="c n_{{i}}" id="c n_{{i}}" type="text" 
-        placeholder='Name, e.g. "Galatians 5"' oninput="cmtt()"><br>
-      </summary>
-      <!-- <label for="cl">Texts:</label> -->
-      <textarea name="t_{{i}}" id="c t_{{i}}" placeholder="Texts" oninput="cmtt()" 
-      onclick="tasetheight({h:20,i:this.id})"></textarea>
-      <details id="so_{{i}}" ontoggle="cmtt(0)">
-        <summary>styles</summary>
-        <div class="qi__">
-          <label for="w">width</label><br>
-          <input type="number" name="w" id="c w_{{i}}" min="0" step="10" value="{{w}}" class="wsi">pt
-        </div>
-        <div class="qi__">
-          <label for="s">font size</label><br>
-          <input type="number" name="s" id="c s_{{i}}" min="0" value="{{s}}" class="wsi">pt
-        </div>
-        <div class="qi__">
-          <label for="y">font</label><br>
-          <select name="y" id="c y_{{i}}">
-            <option class="HE" value="Helvetica">Helvetica</option>
-            <option class="VE" value="Verdana">Verdana</option>
-            <option class="TN" value="Times New Roman">Times New Roman</option>
-            <option class="GA" value="Garamond">Garamond</option>
-            <option class="CC" value="Comic Sans MS">Comic Sans MS</option>
-            <option class="CO" value="Courier New">Courier New</option>
-            <option class="GE" value="Georgia">Georgia</option>
-            <option class="OL" value="Lucida Console">Lucida Console</option>
-            <option class="TA" value="Tahoma">Tahoma</option>
-          </select>
-        </div>
-      </details>
-    </details>
-    {{/each}}
-  </template>
-  
-  <button id="cmp_" onclick="cmpm()">more custom lines</button>
-  <button id="cmm_" onclick="cmpm()">less custom lines</button>
-  <button id="update" onclick="updateurl()">update url</button>
-  
-  <br><br>
-  <button id="submit" onclick="buttons()">generate!</button><br>
-  <!-- <label for="r">tutorial: <a href="https://youtu.be/Klhz6wh0YIk">https://youtu.be/Klhz6wh0YIk</a></label> -->
-  <br>
-  <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
-  <textarea id="r" name="r" readonly="readonly" cols="30" rows="10"></textarea>
-
   <template id="qi__">
     {{#each l_}}
     <div id="q{{i}}_t" class="qi_t">
+      <button id="0_{{@index}}" onclick="ud()" class="ud">🡩</button>
+      <button id="1_{{@index}}" onclick="ud()" class="ud">🡫</button>
       <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="bodr qi qi__ qi_u">
         {{i}}
         <div class="qi__ dbnn">
           <label for="dbnn">database</label><br>
-          <select name="dbnn" id="dbnn_{{i}}">
+          <select name="dbnn" id="dbnn_{{@index}}_{{i}}">
             {{#each ../db__}}
             <option value={{n}}>{{n}}</option>
             {{/each}}
@@ -95,7 +37,7 @@
         </div>
         <div class="qi__ bn">
           <label for="bn">Bible Version</label><br>
-          <select name="bn" id="bn_{{i}}">
+          <select name="bn" id="bn_{{@index}}_{{i}}">
             {{#each l_.bn}}
             <option value="{{n}}">{{n}}</option>
             {{/each}}
@@ -104,7 +46,7 @@
         <!--  -->
         <div class="qi__ b">
           <label for="b">Book</label><br>
-          <select name="b" id="b_{{i}}">
+          <select name="b" id="b_{{@index}}_{{i}}">
             {{#each ../b_}}
             <option value={{oe}}>{{title_short}}</option>
             {{/each}}
@@ -112,7 +54,7 @@
         </div>
         <div class="qi__ cao c">
           <label for="c">Chapter</label><br>
-          <select name="c" id="c_{{i}}">
+          <select name="c" id="c_{{@index}}_{{i}}">
             {{#each l_.c}}
             <option value={{c}}>{{c}}</option>
             {{/each}}
@@ -120,7 +62,7 @@
         </div> 
         <div class="qi__ cao a" onauxclick="ohandler()">
           <label for="a">Begins in</label><br>
-          <select name="a" id="a_{{i}}">
+          <select name="a" id="a_{{@index}}_{{i}}">
             {{#each l_.a}}
             <option value={{v}}>{{v}}</option>
             {{/each}}
@@ -128,7 +70,7 @@
         </div>
         <div class="qi__ cao o">
           <label for="o">ends in</label><br>
-          <select name="o" id="o_{{i}}" onauxclick="ohandler()">
+          <select name="o" id="o_{{@index}}_{{i}}" onauxclick="ohandler()">
             {{#each l_.o}}
             <option value={{v}}>{{v}}</option>
             {{/each}}
@@ -139,7 +81,7 @@
       <div id="q{{i}}" name="q{{i}}" onchange="passive()" class="bodr qi qi__ qi_l">
         <div class="qi__">
           <label for="m">mode</label><br>
-          <select name="m" id="m_{{i}}" class="">
+          <select name="m" id="m_{{@index}}_{{i}}" class="">
             <option value=1>1. KJV texts with italic</option>
             <option value=2>2. plus Red texts on the words of Jesus Christ</option>
             <option value=3>3. plus reference to Strong's number (at biblehub.com)</option>
@@ -147,20 +89,20 @@
         </div>
         <div class="qi__ ">
           <label for="j">j</label><br>
-          <input type="checkbox" name="j" id="j_{{i}}">
+          <input type="checkbox" name="j" id="j_{{@index}}_{{i}}">
         </div>
         <!--  -->
         <div class="qi__">
           <label for="w">width</label><br>
-          <input type="number" name="w" id="w_{{i}}" min="0" step="10" value="380" class="wsi">pt
+          <input type="number" name="w" id="w_{{@index}}_{{i}}" min="0" step="10" value="380" class="wsi">pt
         </div>
         <div class="qi__">
           <label for="s">font size</label><br>
-          <input type="number" name="s" id="s_{{i}}" min="0" value="12" class="wsi">pt
+          <input type="number" name="s" id="s_{{@index}}_{{i}}" min="0" value="12" class="wsi">pt
         </div>
         <div class="qi__">
           <label for="y">font</label><br>
-          <select name="y" id="y_{{i}}">
+          <select name="y" id="y_{{@index}}_{{i}}">
             <option class="HE" value="Helvetica">Helvetica</option>
             <option class="VE" value="Verdana">Verdana</option>
             <option class="TN" value="Times New Roman">Times New Roman</option>
@@ -178,6 +120,72 @@
     {{/each}}
   </template>
   
+  <button id="more" onclick="buttons()">more</button>
+  <button id="less" onclick="buttons()">less</button>
+  <button id="update" onclick="updateurl()">update url</button>
+  <br><br>
+  
+  <div id="cm">No custom lines yet... Press "more custom lines" for customised import.</div>
+  <template id="cm__">
+    <div id="cm_n">Custom lines:</div>
+    {{#each cm}}
+    <details id="co_{{@index}}_{{i}}" ontoggle="cmtt(0)" onchange="cmtt()" open>
+
+      <summary>
+        <button id="c 0_{{@index}}" onclick="ud()" class="ud">🡩</button>
+        <button id="c 1_{{@index}}" onclick="ud()" class="ud">🡫</button>
+        <label for="c n_{{i}}">Group {{i}}:</label>
+        <input name="c n_{{i}}" id="c n_{{@index}}_{{i}}" type="text" 
+        placeholder='Name, e.g. "Galatians 5"' oninput="cmtt()"><br>
+      </summary>
+      
+      <!-- <label for="cl">Texts:</label> -->
+      <textarea name="t_{{i}}" id="c t_{{@index}}_{{i}}" placeholder="Texts" oninput="cmtt()" 
+      onclick="tasetheight({h:20,i:this.id})"></textarea>
+
+      <details id="so_{{@index}}_{{i}}" ontoggle="cmtt(0)">
+        <summary>styles</summary>
+        <div class="qi__">
+          <label for="w">width</label><br>
+          <input type="number" name="w" id="c w_{{@index}}_{{i}}" min="0" step="10" value="{{w}}" class="wsi">pt
+        </div>
+        <div class="qi__">
+          <label for="s">font size</label><br>
+          <input type="number" name="s" id="c s_{{@index}}_{{i}}" min="0" value="{{s}}" class="wsi">pt
+        </div>
+        <div class="qi__">
+          <label for="y">font</label><br>
+          <select name="y" id="c y_{{@index}}_{{i}}">
+            <option class="HE" value="Helvetica">Helvetica</option>
+            <option class="VE" value="Verdana">Verdana</option>
+            <option class="TN" value="Times New Roman">Times New Roman</option>
+            <option class="GA" value="Garamond">Garamond</option>
+            <option class="CC" value="Comic Sans MS">Comic Sans MS</option>
+            <option class="CO" value="Courier New">Courier New</option>
+            <option class="GE" value="Georgia">Georgia</option>
+            <option class="OL" value="Lucida Console">Lucida Console</option>
+            <option class="TA" value="Tahoma">Tahoma</option>
+          </select>
+        </div>
+      </details>
+
+    </details>
+    {{/each}}
+  </template>
+  
+  <button id="cmp_" onclick="cmpm()">more custom lines</button>
+  <button id="cmm_" onclick="cmpm()">less custom lines</button>
+  <button id="update" onclick="updateurl()">update url</button>
+  <br><br>
+
+  <button id="submit" onclick="buttons()">generate!</button>
+  <br>
+
+  <!-- <label for="r">tutorial: <a href="https://youtu.be/Klhz6wh0YIk">https://youtu.be/Klhz6wh0YIk</a></label> -->
+  <br>
+  <label for="r">csv import texts, copy and paste the following into the draw.io csv import window.</label><br>
+  <textarea id="r" name="r" readonly="readonly" cols="30" rows="10"></textarea>
+
   <form id="sd" class="h">
     <input type="hidden" name="db__" id="db__">
     <input type="hidden" name="b_" id="b_">

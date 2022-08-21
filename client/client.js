@@ -71,11 +71,14 @@ function tasetheight(op={h:40,i:'r'}){
   r.style.height = (r.scrollHeight)+op.h+"px";
 }
 
+function en(n,i,o){return`${n}_${i}_${o}`}
+
+// populate the form fields
 function bcao(i_,cm=0){
   if(i_){
-    i_.forEach((e)=>{
+    i_.forEach((e,i)=>{
       Object.keys(e).forEach((f)=>{
-        var m=`${f}_${e.i}`;if(cm){m='c '+m};m=dget(m)
+        var m=en(f,i,e.i);if(cm){m='c '+m};m=dget(m)
         if(f!='i'){
           if(f!='l_'&&f!='co'&&f!='so'){m.value=e[f]}
           if(f=='j'){m.checked=(+e[f])
@@ -170,12 +173,12 @@ function updatei_l_(i_,l_,db__=undefined,b_=undefined) {
 
 function ohandler(){
   const n=aeid()
-  const i=n.split('_')[1]
-  const a=ea('a_'+i)
+  const [i,i0]=n.split('_').slice(1)
+  const a=ea(en('a',i,i0))
 
   var i_=jpev('i_');i_[i].o=a
   updatevaluejstr('i_',i_)
-  updatevalue('o_'+i,a)
+  updatevalue(en('o',i,i0),a)
 
   // whpushstate('/?i_='+JSON.stringify(i_))
 
@@ -185,7 +188,7 @@ function ohandler(){
 
 async function active(){
   var e=ae();var [n,a]=[e.id,e.value]
-  
+
   if(f=='j'){a=(e.checked)?1:0}
   var [f,i]=n.split('_')
   var [i_,l_]=[jpev('i_'),jpev('l_')]
@@ -237,11 +240,11 @@ async function buttons(){
   var i_=jpev('i_');var [n,fn,fi]=[1,'',''];
   if(a_id=='submit'){
     var f_=['b','c','a','o']
-    i_.every((i)=>{i=i.i;f_.every((f)=>{
-        if(!ea(f+'_'+i)){n=0;fn=f;fi=i}
-        return(n)?true:false
-      });return(n)?true:false
-    })    
+    i_.every((e,i)=>{f_.every((f)=>{
+        if(!ea(en(f,i,e.i))){n=0;fn=f;fi=e.i}
+        return !!n
+      });return !!n
+    })
     if(!n){alert(`Form incomplete. Please select ${m[fn]} from group ${fi}.`)}
     else{
       // api call
@@ -288,14 +291,14 @@ function updatecm(cm) {
   updateih('cm',(cm.length)?hbsc({cm})
   :'No custom lines yet... Press "more custom lines" for customised import.')
 
-  cm.forEach((o)=>{
-    if(dget("co_"+o.i).open!=(!!o.co)){
+  cm.forEach((o,i)=>{
+    if(dget(en("co",i,o.i)).open!=(!!o.co)){
       // console.log("executed co");
-      document.getElementById("co_"+o.i).open=(!!o.co)
+      document.getElementById(en("co",i,o.i)).open=(!!o.co)
     }
-    if(dget("so_"+o.i).open!=(!!o.so)){
+    if(dget(en("so",i,o.i)).open!=(!!o.so)){
       // console.log("executed so");
-      document.getElementById("so_"+o.i).open=(!!o.so)
+      document.getElementById(en("so",i,o.i)).open=(!!o.so)
     }
   })
 
@@ -329,6 +332,19 @@ function cmtt(c=1){
 
 const ia_p={b:0,c:0,a:0,o:0}
 const la_p={c:[{}],a:[{}],o:[{}]}
+
+function udud(a,i,m=2){
+  // swapping elements: https://stackoverflow.com/a/872317
+  return m>1?a:((n=0)=>{n=i+2*m-1;[a[n],a[i]]=[a[i],a[n]];return a})()
+}
+function ud() {
+  const ii = te().id.split(' '),c=(ii.length>1)
+  const [n,i] = (c?ii[1]:ii[0]).split('_').map(e=>+e)
+  // use udud to process items.
+  function hh(e){e=jpev(e);return((i==n&&n==0)||(i==e.length-1&&n==1))?e:udud(e,i,n)}
+  // if(c){upud('cust')}else{upud('i_');upud('l_')}
+  c?updatecm(hh('cust')):updatei_l_(hh('i_'),hh('l_'))
+}
 
 async function initialise(){
   updateih('qi','Initialising form...')
