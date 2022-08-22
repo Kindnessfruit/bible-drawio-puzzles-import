@@ -23,8 +23,8 @@
   <template id="qi__">
     {{#each l_}}
     <div id="q{{i}}_t" class="qi_t">
-      <button id="0_{{@index}}" onclick="ud()" class="ud">🡩</button>
-      <button id="1_{{@index}}" onclick="ud()" class="ud">🡫</button>
+      <button id="0_{{@index}}" onclick="ud()" class="ud">⇈</button>
+      <button id="1_{{@index}}" onclick="ud()" class="ud">⇊</button>
       <div id="q{{i}}_u" name="q{{i}}_u" onchange="active()" class="bodr qi qi__ qi_u">
         {{i}}
         <div class="qi__ dbnn">
@@ -132,8 +132,8 @@
     <details id="co_{{@index}}_{{i}}" ontoggle="cmtt(0)" onchange="cmtt()" open>
 
       <summary>
-        <button id="c 0_{{@index}}" onclick="ud()" class="ud">🡩</button>
-        <button id="c 1_{{@index}}" onclick="ud()" class="ud">🡫</button>
+        <button id="c 0_{{@index}}" onclick="ud()" class="ud">⇈</button>
+        <button id="c 1_{{@index}}" onclick="ud()" class="ud">⇊</button>
         <label for="c n_{{i}}">Group {{i}}:</label>
         <input name="c n_{{i}}" id="c n_{{@index}}_{{i}}" type="text" 
         placeholder='Name, e.g. "Galatians 5"' oninput="cmtt()"><br>
