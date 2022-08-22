@@ -49,4 +49,7 @@ video{
   left: 50%;
   transform: translate(-50%,0);
 }
-.ud{font-size: 14pt}
+.ud{
+  font-size: 14pt;
+  /* font-weight: 400; */
+}
