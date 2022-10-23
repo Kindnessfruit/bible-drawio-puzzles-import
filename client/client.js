@@ -223,13 +223,15 @@ async function getresults(u){
   // test for a specific character in the uri to determine either get or post request. (modification)
   const c=qstr(u).cm=='n'
   var l='/api';l+=(c)?'':u
-  const r=(await fetchjson(l,(c)?{
+
+  // post requests only from this update onward
+  const r=(await fetchjson(l,{
     method: 'POST',
     body: JSON.stringify({i_:jpev('i_'),cm:jpev('cust')}),
     headers:{
       'Content-type':'application/json; charset=UTF-8'
     }
-  }:{})).r
+  })).r
   updateih('r',r)
   tasetheight()
 }
@@ -278,7 +280,10 @@ function updateurl(op={}){
   // test the size of the uri to determine uri (modification)
   const a='https://biblepuzzles.herokuapp.com/api'
   var u=encodeURI(`?i_=${jstr(op.i_)}&cm=${jstr(op.cm)}`)
-  if(new Blob([a+u]).size>8192){u=encodeURI(`?i_=${jstr(op.i_)}&cm=n`)}
+
+  // handle cases where custom lines include "&", which cannot be inserted in uri.
+  var n=0;op.cm.every(e=>{n=e.t.includes("&");return !n})
+  if((new Blob([a+u]).size>8192)||n){u=encodeURI(`?i_=${jstr(op.i_)}&cm=n`)}
   if(+op.r){u+='&r=1'}
   whpushstate(u)
   return u

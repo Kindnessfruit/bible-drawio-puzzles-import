@@ -82,9 +82,9 @@ async function result(qo,an,p=0) {
         :((i_&&i_.length)?await cl.qi2l({qi:i_})
         :await cl.qi2l({cm:cm}))
     })
-  }catch(error){apierrorhandling(an,er)}
+  }catch(er){apierrorhandling(an,er)}
 }
-host.get('/api',async(qo,an)=>{await result(qo,an)})
+host.get('/api',async(qo,an)=>{await result(qo,an)})  // may not be necessary in the future.
 host.post('/api',async(qo,an)=>{await result(qo,an,1)})
 
 // wakey wakey~
