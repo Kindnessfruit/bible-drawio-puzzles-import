@@ -53,3 +53,12 @@ video{
   font-size: 14pt;
   /* font-weight: 400; */
 }
+footer {
+  position: fixed;
+  left: 0;
+  bottom: 0px;
+  width: 100%;
+  border: 1.2px dashed;
+  text-align: center;
+  background-color: white;
+}
