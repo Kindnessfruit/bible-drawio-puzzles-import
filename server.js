@@ -98,5 +98,5 @@ host.listen(port,()=>{
 
 // wakey wakey~
 setInterval(() => {
-  http.get("https://biblepuzzles.onrender.com/api/wakey");
+  http.get("http://biblepuzzles.onrender.com/api/wakey");
 }, 20 * 60 * 1000);
